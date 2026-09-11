@@ -45,7 +45,7 @@ const dbRef = firebase.database().ref('jv_international');
 const INITIAL={"base":[{"name":"24/1 OE 100%","colors":{"PFD":{"hilo":56.5,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":56.5,"tejido":8.5,"acabado":22},"CLARO":{"hilo":56.5,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":56.5,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":56.5,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 100%","colors":{"PFD":{"hilo":77,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":77,"tejido":8.5,"acabado":22},"CLARO":{"hilo":77,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":77,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":77,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 50/50%","colors":{"PFD":{"hilo":67,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":67,"tejido":8.5,"acabado":22},"CLARO":{"hilo":67,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":67,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":67,"tejido":8.5,"acabado":49}}},{"name":"20/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"18/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 95/5% C/S","colors":{"PFD":{"hilo":0,"tejido":9.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":9.5,"acabado":22},"CLARO":{"hilo":0,"tejido":9.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":9.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":9.5,"acabado":50}}}],"defaults":{"fabric":"24/1 OE 100%","color":"MEDIO","pcsKg":4,"logistics":17,"fx":16.7,"thread":0.1,"print":0.5,"dye":0.55,"trims":0.18,"waste":0.03,"overhead":0.35,"commission":0.05,"profit":0.1}};
 
 let state = {base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
-let editingQuoteId = null; // Tracks if we are editing an existing quote
+let editingQuoteId = null;
 
 const titles={
   dashboard:['Dashboard','Overview of quotes and pricing.'],
@@ -191,7 +191,6 @@ function nextFolio(){const n=state.quotes.length+1;return 'COT-'+new Date().getF
 function saveQuote(){
   const x=calc();
   if (editingQuoteId) {
-    // Update existing quote
     const index = state.quotes.findIndex(q => q.id === editingQuoteId);
     if (index !== -1) {
       const existing = state.quotes[index];
@@ -218,7 +217,6 @@ function saveQuote(){
       toast('Quote updated successfully: ' + existing.folio);
     }
   } else {
-    // Create new quote
     const q = {
       id: crypto.randomUUID(),
       folio: nextFolio(),
@@ -254,8 +252,7 @@ function saveQuote(){
   updateClientList();
   renderDashboard();
   
-  // Clean form after saving or editing
-  resetQuote(false);
+  resetQuote(true);
   editingQuoteId = null;
   document.getElementById('formTitleText').textContent = 'Quote Information';
   document.getElementById('saveBtnText').textContent = 'Save Quote';
@@ -269,6 +266,12 @@ function resetQuote(clearAllFields = true){
     fillColors();
     document.getElementById('qQty').value='';
     document.getElementById('qPcsKg').value='';
+    document.getElementById('qLogistics').value='';
+    document.getElementById('qFx').value='';
+    document.getElementById('qThread').value='';
+    document.getElementById('qPrint').value='';
+    document.getElementById('qDye').value='';
+    document.getElementById('qTrims').value='';
   }
   document.getElementById('qNotes').value='';
   quotePhotos=[];
@@ -292,7 +295,7 @@ function printQuote(){
     <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #ccc;padding-bottom:6px;margin-bottom:8px">
       <div>
         <div style="background:#0b5d94;padding:4px 8px;border-radius:4px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:4px;color:#fff"><span style="font-weight:900;font-size:11px;letter-spacing:1px;line-height:1">JV</span><span style="font-weight:700;font-size:5px;letter-spacing:1px;margin-top:1px;text-transform:uppercase">International</span></div>
-        <h1 style="margin:0;font-size:16px">JV International</h1>
+        <h1 style="margin:0;font-size:16px">JV International - ${folio}</h1>
       </div>
       <div style="text-align:right">
         <div style="font-weight:900;font-size:13px;color:#0b5d94">${folio}</div>
@@ -461,6 +464,8 @@ function clearAll(){
     toast('Database cleared');
   });
 }
+
+otherInputsToClear=['qLogistics','qFx','qThread','qPrint','qDye','qTrims']; // handled in resetQuote
 
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 
