@@ -102,7 +102,7 @@ function showNewQuote(){
   document.getElementById('formTitleText').textContent = 'Quote Information';
   document.getElementById('saveBtnText').textContent = 'Save Quote';
   showView('new');
-  resetQuote(false);
+  resetQuote(true);
 }
 
 function init(){
@@ -141,7 +141,6 @@ function syncBase(){
   document.getElementById('qPrint').value=state.defaults.print;
   document.getElementById('qDye').value=state.defaults.dye;
   document.getElementById('qTrims').value=state.defaults.trims;
-  document.getElementById('qPcsKg').value=state.defaults.pcsKg;
   document.getElementById('qLogistics').value=state.defaults.logistics;
   document.getElementById('qFx').value=state.defaults.fx;
 }
@@ -266,10 +265,10 @@ function resetQuote(clearAllFields = true){
   if (clearAllFields) {
     document.getElementById('qClient').value='';
     document.getElementById('qStyle').value='';
-    document.getElementById('qFabric').value = 0;
+    document.getElementById('qFabric').selectedIndex = 0;
     fillColors();
-    document.getElementById('qQty').value=1000;
-    document.getElementById('qPcsKg').value = state.defaults.pcsKg;
+    document.getElementById('qQty').value='';
+    document.getElementById('qPcsKg').value='';
   }
   document.getElementById('qNotes').value='';
   quotePhotos=[];
@@ -287,12 +286,19 @@ function resetQuote(clearAllFields = true){
 
 function printQuote(){
   const x=calc(),client=document.getElementById('qClient').value||'General Public',style=document.getElementById('qStyle').value,
-  folio=editingQuoteId ? (state.quotes.find(q => q.id === editingQuoteId)?.folio || nextFolio()) : (document.getElementById('resultRef').textContent.split('·')[0].trim() !== 'Unsaved' ? document.getElementById('resultRef').textContent.split('·')[0].trim() : nextFolio()),date=document.getElementById('qDate').value;
+  folio=editingQuoteId ? (state.quotes.find(q => q.id === editingQuoteId)?.folio || nextFolio()) : (document.getElementById('resultRef').textContent.split('·')[0].trim() !== 'Unsaved' ? document.getElementById('resultRef').textContent.split('·')[0].trim() : nextFolio());
   const photosHtml=quotePhotos.length?`<div style="margin-top:8px"><b>Photos:</b><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${quotePhotos.map(p=>`<img src="${p}" style="width:60px;height:60px;object-fit:cover;border:1px solid #ddd;border-radius:4px">`).join('')}</div></div>`:'';
   document.getElementById('printArea').innerHTML=`<div style="font-size:10px;line-height:1.15">
-    <div style="background:#0b5d94;padding:5px 8px;border-radius:4px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:8px;color:#fff"><span style="font-weight:900;font-size:13px;letter-spacing:1px;line-height:1">JV</span><span style="font-weight:700;font-size:6px;letter-spacing:1px;margin-top:1px;text-transform:uppercase">International</span></div>
-    <h1 style="margin:0 0 3px;font-size:20px">JV International</h1>
-    <div style="color:#666">${folio} &nbsp;·&nbsp; ${date}</div><hr style="margin:5px 0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #ccc;padding-bottom:6px;margin-bottom:8px">
+      <div>
+        <div style="background:#0b5d94;padding:4px 8px;border-radius:4px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:4px;color:#fff"><span style="font-weight:900;font-size:11px;letter-spacing:1px;line-height:1">JV</span><span style="font-weight:700;font-size:5px;letter-spacing:1px;margin-top:1px;text-transform:uppercase">International</span></div>
+        <h1 style="margin:0;font-size:16px">JV International</h1>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:900;font-size:13px;color:#0b5d94">${folio}</div>
+        <div style="color:#666;font-size:9px">${document.getElementById('qDate').value}</div>
+      </div>
+    </div>
     <p style="margin:3px 0"><b>Client:</b> ${esc(client)} &nbsp; <b>Style/Body:</b> ${esc(style||'N/A')}</p>
     <p style="margin:3px 0"><b>Fabric:</b> ${esc(x.f.name)} &nbsp; <b>Color:</b> ${esc(x.color)} &nbsp; <b>Quantity:</b> ${x.qty.toLocaleString()}</p>
     <table style="width:100%;border-collapse:collapse;font-size:10px;margin-top:5px">
