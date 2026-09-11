@@ -1,5 +1,5 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cotizador de Prendas</title><style>
-:root{--bg:#f4f6f8;--panel:#fff;--ink:#17212b;--muted:#6b7280;--line:#e5e7eb;--accent:#0f6fb2;--accent2:#0b5d94;--ok:#168a55;--danger:#c0392b;--shadow:0 8px 28px rgba(16,24,40,.08)}*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink)}body{display:flex;min-height:100vh}.app{display:flex;width:100%;flex:1}.side{width:220px;background:var(--panel);border-right:1px solid var(--line);padding:24px 16px;overflow-y:auto;box-shadow:var(--shadow)}.brand{font-size:18px;font-weight:700;margin-bottom:4px}.sub{font-size:12px;color:var(--muted);margin-bottom:24px}.nav{display:flex;flex-direction:column;gap:6px}.nav button{background:0;border:0;padding:10px 12px;border-radius:6px;color:var(--ink);cursor:pointer;font-size:14px;text-align:left;transition:all .2s}.nav button:hover{background:var(--bg)}.nav button.active{background:var(--accent);color:#fff}.main{flex:1;display:flex;flex-direction:column}.top{background:var(--panel);padding:16px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top h1{margin:0;font-size:20px}.actions{display:flex;gap:8px}.actions button{padding:8px 16px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:13px;transition:all .2s}.actions button:hover{background:var(--bg)}.actions button.primary{background:var(--accent);color:#fff;border:0}.content{flex:1;overflow-y:auto;padding:24px}.view{display:none}.view.active{display:block}.hidden{display:none}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}.card{background:var(--panel);padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--line)}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}.value{font-size:28px;font-weight:700;color:var(--accent)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:24px}.section-title{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--ink)}.form{display:grid;gap:16px}.field{display:flex;flex-direction:column}.field label{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--ink)}.field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;font-family:inherit;transition:all .2s}.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,111,178,.1)}.field textarea{resize:vertical;min-height:80px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}.grid2>.panel{margin-bottom:0}.calc-result{font-size:24px;font-weight:700;color:var(--ok);margin:16px 0}.result-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}.result-row-bold{font-weight:600}.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th{text-align:left;padding:10px;background:var(--bg);font-weight:600;border-bottom:2px solid var(--line)}.table td{padding:10px;border-bottom:1px solid var(--line)}.table tr:hover{background:var(--bg)}.table .actions{justify-content:flex-start}.toast{display:none;position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 16px;border-radius:6px;font-size:13px;z-index:9999;animation:slideIn .3s}.toast.show{display:block}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.toolbar input{flex:1;min-width:200px}.photo-preview{margin:12px 0;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--line);font-size:13px}.photo-input{display:flex;gap:8px}.photo-input label{flex:1}.photo-input input{flex:1}@keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}@media(max-width:768px){.grid2{grid-template-columns:1fr}.side{width:60px}.side .brand,.side .sub{display:none}.side .nav{gap:3px}.nav button{padding:10px 8px;font-size:12px}.actions{flex-direction:column}.top{flex-direction:column;align-items:stretch}.cards{grid-template-columns:1fr}}
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cotizador de Prendas - JV International</title><style>
+:root{--bg:#f4f6f8;--panel:#fff;--ink:#17212b;--muted:#6b7280;--line:#e5e7eb;--accent:#0f6fb2;--accent2:#0b5d94;--ok:#168a55;--danger:#c0392b;--shadow:0 8px 28px rgba(16,24,40,.08)}*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink)}body{display:flex;min-height:100vh}.app{display:flex;width:100%;flex:1}.side{width:220px;background:var(--panel);border-right:1px solid var(--line);padding:24px 16px;overflow-y:auto;box-shadow:var(--shadow)}.logo-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}.logo-brand img{height:40px;object-fit:contain}.brand{font-size:18px;font-weight:700;margin-bottom:4px}.sub{font-size:12px;color:var(--muted);margin-bottom:24px}.nav{display:flex;flex-direction:column;gap:6px}.nav button{background:0;border:0;padding:10px 12px;border-radius:6px;color:var(--ink);cursor:pointer;font-size:14px;text-align:left;transition:all .2s}.nav button:hover{background:var(--bg)}.nav button.active{background:var(--accent);color:#fff}.main{flex:1;display:flex;flex-direction:column}.top{background:var(--panel);padding:16px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top h1{margin:0;font-size:20px}.actions{display:flex;gap:8px}.actions button{padding:8px 16px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:13px;transition:all .2s}.actions button:hover{background:var(--bg)}.actions button.primary{background:var(--accent);color:#fff;border:0}.content{flex:1;overflow-y:auto;padding:24px}.view{display:none}.view.active{display:block}.hidden{display:none}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}.card{background:var(--panel);padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--line)}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}.value{font-size:28px;font-weight:700;color:var(--accent)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:24px}.section-title{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--ink)}.form{display:grid;gap:16px}.field{display:flex;flex-direction:column}.field label{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--ink)}.field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;font-family:inherit;transition:all .2s}.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,111,178,.1)}.field textarea{resize:vertical;min-height:80px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}.grid2>.panel{margin-bottom:0}.calc-result{font-size:24px;font-weight:700;color:var(--ok);margin:16px 0}.result-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}.result-row-bold{font-weight:600}.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th{text-align:left;padding:10px;background:var(--bg);font-weight:600;border-bottom:2px solid var(--line)}.table td{padding:10px;border-bottom:1px solid var(--line)}.table tr:hover{background:var(--bg)}.table .actions{justify-content:flex-start}.toast{display:none;position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 16px;border-radius:6px;font-size:13px;z-index:9999;animation:slideIn .3s}.toast.show{display:block}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.toolbar input{flex:1;min-width:200px}.photo-preview{margin:12px 0;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--line);font-size:13px}.photo-input{display:flex;gap:8px}.photo-input label{flex:1}.photo-input input{flex:1}.sync-status{display:inline-block;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600}.sync-status.synced{background:#d4edda;color:#155724}.sync-status.error{background:#f8d7da;color:#721c24}@keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}@media(max-width:768px){.grid2{grid-template-columns:1fr}.side{width:60px}.side .brand,.side .sub{display:none}.side .logo-brand img{display:none}.side .nav{gap:3px}.nav button{padding:10px 8px;font-size:12px}.actions{flex-direction:column}.top{flex-direction:column;align-items:stretch}.cards{grid-template-columns:1fr}}
 .logo-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}.logo-header img{height:50px}.no-print{display:block}
 .print-only{display:none}
 @page{size:Letter portrait;margin:0.35in}
@@ -17,12 +17,15 @@ body{font-size:10px!important;background:#fff!important}
 .panel{box-shadow:none!important;border:0!important}
 #printArea{page-break-inside:avoid!important;break-inside:avoid!important}
 img{page-break-inside:avoid!important;break-inside:avoid!important}
-}</style></head><body><div class="app"><aside class="side"><div class="brand">COTIZADOR</div><div class="sub">Sistema de cotización de prendas</div><div class="nav"><button data-view="dashboard" class="nav-btn active">📊 Dashboard</button><button data-view="new" class="nav-btn">➕ Nueva</button><button data-view="history" class="nav-btn">📋 Historial</button><button data-view="clients" class="nav-btn">👥 Clientes</button><button data-view="base" class="nav-btn">💰 Base costos</button><button data-view="settings" class="nav-btn">⚙️ Configuración</button></div></aside><main class="main"><div class="top"><h1 id="topTitle">Dashboard</h1><div class="actions"><button class="primary" id="syncBtn" onclick="syncToCloud()">☁️ Sincronizar</button><button onclick="exportData()">📥 Exportar</button><button onclick="importData()">📤 Importar</button></div></div><div class="content"><section id="dashboard" class="view active"><div class="cards"><div class="card"><div class="label">Cotizaciones guardadas</div><div class="value" id="kQuotes">0</div></div><div class="card"><div class="label">Clientes registrados</div><div class="value" id="kClients">0</div></div><div class="card"><div class="label">Última cotización</div><div class="value" id="kLast">-</div></div></div></section><section id="new" class="view"><div class="grid2"><div class="panel"><div class="section-title">Datos de cotización</div><div class="form"><div class="field"><label>Cliente</label><input id="qClient" list="clientList"><datalist id="clientList"></datalist></div><div class="field"><label>Fecha</label><input id="qDate" type="date"></div><div class="field"><label>Tela</label><select id="qFabric" onchange="fillColors()"><option>Seleccionar...</option></select></div><div class="field"><label>Color</label><select id="qColor"><option>Seleccionar...</option></select></div><div class="field"><label>Estilo/Cuerpo</label><input id="qStyle" type="text" placeholder="Ej: Jersey, Polo, Piqué, T-Shirt"></div><div class="field"><label>Cantidad</label><input id="qQty" type="number" value="1000"></div><div class="field"><label>Pcs/kg</label><input id="qPcsKg" type="number" step="0.01" value="7.5"></div><div class="field"><label>Factor de costo (fx)</label><input id="qFx" type="number" step="0.01" value="1"></div><div class="field"><label>Logarítmo (opcional)</label><input id="qLogx" type="number" step="0.01"></div><div class="field"><label>Notas</label><textarea id="qNotes" placeholder="Observaciones adicionales..."></textarea></div><div class="photo-input"><label>Fotos:<input id="qPhotos" type="file" accept="image/*" multiple onchange="handlePhotos(event)" style="display:none"></label><button type="button" onclick="document.getElementById('qPhotos').click()" style="flex:0">📸 Seleccionar fotos</button></div><div id="photoPreview" class="photo-preview">Sin fotos seleccionadas.</div><div style="display:flex;gap:8px"><button class="primary" onclick="saveQuote()">✅ Guardar cotización</button><button onclick="resetQuote()">🔄 Limpiar</button></div></div></div><div class="panel" id="calcPanel"><div class="section-title">Precio calculado</div><div id="calcResult"></div><button class="primary" onclick="doPrint()">🖨️ Imprimir</button></div></div></section><section id="history" class="view"><div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><h2>Historial de cotizaciones</h2><input id="historySearch" type="text" placeholder="Buscar por folio o cliente..." onkeyup="renderHistory()" style="flex:1;max-width:300px"></div><div id="historyTable"></div></div></section><section id="clients" class="view"><div class="panel"><h2>Clientes</h2><div class="form"><div class="field"><label>Nombre del cliente</label><input id="cName"></div><div class="field"><label>Contacto</label><input id="cContact"></div><div style="display:flex;gap:8px"><button class="primary" onclick="addClient()">Agregar cliente</button></div></div><div id="clientsTable"></div></div></section><section id="base" class="view"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2>Base de costos</h2><div class="muted" style="font-size:12px">Precios unitarios en USD</div></div><button class="primary" onclick="addBase()">+ Nueva tela</button></div><div id="baseTable"></div></div></section><section id="settings" class="view"><div class="panel"><h2>Configuración de márgenes</h2><div class="form"><div class="field"><label>Merma</label><input id="sWaste" type="number" step="0.1"></div><div class="field"><label>Comisión (%)</label><input id="sComm" type="number" step="0.1"></div><div class="field"><label>Utilidad (%)</label><input id="sProfit" type="number" step="0.1"></div><div class="field"><label>URL Sincronización (opcional)</label><input id="sSyncUrl" type="text" placeholder="URL de servidor para sincronizar datos..."></div><div><button class="primary" onclick="saveSettings()">Guardar configuración</button></div></div></div></section></div></main></div><div id="toast" class="toast"></div><div id="printArea" style="display:none"></div><script>
+}</style></head><body><div class="app"><aside class="side"><div class="logo-brand"><img src="https://raw.githubusercontent.com/JvInternational/cotizador/main/logo.png" alt="JV International" onerror="this.style.display='none'"></div><div class="brand">COTIZADOR</div><div class="sub">Sistema de cotización de prendas</div><div class="nav"><button data-view="dashboard" class="nav-btn active">📊 Dashboard</button><button data-view="new" class="nav-btn">➕ Nueva</button><button data-view="history" class="nav-btn">📋 Historial</button><button data-view="clients" class="nav-btn">👥 Clientes</button><button data-view="base" class="nav-btn">💰 Base costos</button><button data-view="settings" class="nav-btn">⚙️ Configuración</button></div></aside><main class="main"><div class="top"><h1 id="topTitle">Dashboard</h1><div class="actions"><button class="primary" id="syncBtn" onclick="syncToCloud()">☁️ Sincronizar</button><span id="syncStatus"></span><button onclick="exportData()">📥 Exportar</button><button onclick="importData()">📤 Importar</button></div></div><div class="content"><section id="dashboard" class="view active"><div class="cards"><div class="card"><div class="label">Cotizaciones guardadas</div><div class="value" id="kQuotes">0</div></div><div class="card"><div class="label">Clientes registrados</div><div class="value" id="kClients">0</div></div><div class="card"><div class="label">Última cotización</div><div class="value" id="kLast">-</div></div></div><div class="panel"><h2>Información importante</h2><div style="background:#e3f2fd;padding:16px;border-radius:6px;border-left:4px solid #0f6fb2"><p style="margin:0 0 12px"><strong>📱 Sincronización entre dispositivos</strong></p><p style="margin:0;font-size:13px;color:#555">Tus cotizaciones se sincronizan automáticamente. Configura la URL del servidor en ⚙️ Configuración para activar la sincronización en la nube.</p></div></div></section><section id="new" class="view"><div class="grid2"><div class="panel"><div class="section-title">Datos de cotización</div><div class="form"><div class="field"><label>Cliente</label><input id="qClient" list="clientList"><datalist id="clientList"></datalist></div><div class="field"><label>Fecha</label><input id="qDate" type="date"></div><div class="field"><label>Tela</label><select id="qFabric" onchange="fillColors()"><option>Seleccionar...</option></select></div><div class="field"><label>Color</label><select id="qColor"><option>Seleccionar...</option></select></div><div class="field"><label>Estilo/Cuerpo</label><input id="qStyle" type="text" placeholder="Ej: Jersey, Polo, Piqué, T-Shirt"></div><div class="field"><label>Cantidad</label><input id="qQty" type="number" value="1000"></div><div class="field"><label>Pcs/kg</label><input id="qPcsKg" type="number" step="0.01" value="7.5"></div><div class="field"><label>Factor de costo (fx)</label><input id="qFx" type="number" step="0.01" value="1"></div><div class="field"><label>Logarítmo (opcional)</label><input id="qLogx" type="number" step="0.01"></div><div class="field"><label>Notas</label><textarea id="qNotes" placeholder="Observaciones adicionales..."></textarea></div><div class="photo-input"><label>Fotos:<input id="qPhotos" type="file" accept="image/*" multiple onchange="handlePhotos(event)" style="display:none"></label><button type="button" onclick="document.getElementById('qPhotos').click()" style="flex:0">📸 Seleccionar fotos</button></div><div id="photoPreview" class="photo-preview">Sin fotos seleccionadas.</div><div style="display:flex;gap:8px"><button class="primary" onclick="saveQuote()">✅ Guardar cotización</button><button onclick="resetQuote()">🔄 Limpiar</button></div></div></div><div class="panel" id="calcPanel"><div class="section-title">Precio calculado</div><div id="calcResult"></div><button class="primary" onclick="doPrint()">🖨️ Imprimir</button></div></div></section><section id="history" class="view"><div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><h2>Historial de cotizaciones</h2><input id="historySearch" type="text" placeholder="Buscar por folio o cliente..." onkeyup="renderHistory()" style="flex:1;max-width:300px"></div><div id="historyTable"></div></div></section><section id="clients" class="view"><div class="panel"><h2>Clientes</h2><div class="form"><div class="field"><label>Nombre del cliente</label><input id="cName"></div><div class="field"><label>Contacto</label><input id="cContact"></div><div style="display:flex;gap:8px"><button class="primary" onclick="addClient()">Agregar cliente</button></div></div><div id="clientsTable"></div></div></section><section id="base" class="view"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2>Base de costos</h2><div class="muted" style="font-size:12px">Precios unitarios en USD</div></div><button class="primary" onclick="addBase()">+ Nueva tela</button></div><div id="baseTable"></div></div></section><section id="settings" class="view"><div class="panel"><h2>Configuración de márgenes</h2><div class="form"><div class="field"><label>Merma</label><input id="sWaste" type="number" step="0.1"></div><div class="field"><label>Comisión (%)</label><input id="sComm" type="number" step="0.1"></div><div class="field"><label>Utilidad (%)</label><input id="sProfit" type="number" step="0.1"></div></div></div><div class="panel"><h2>Sincronización en la nube</h2><div style="background:#fff3cd;padding:16px;border-radius:6px;border-left:4px solid #ff9800;margin-bottom:16px"><p style="margin:0 0 12px"><strong>☁️ Sincronizar entre dispositivos</strong></p><p style="margin:0;font-size:13px;color:#555">Para sincronizar tus cotizaciones entre celular, tablet y computadora, necesitas configurar un servidor backend.</p><p style="margin:12px 0 0;font-size:13px"><strong>📖 Guía de configuración:</strong></p><ol style="margin:8px 0;padding-left:20px;font-size:13px"><li>Ve a <a href="https://github.com/JvInternational/cotizador-backend" target="_blank" style="color:#0f6fb2">cotizador-backend</a></li><li>Lee el archivo <code>DEPLOYMENT_GUIDE.md</code></li><li>Sigue los pasos para desplegar en Render.com (gratis)</li><li>Copia la URL que obtengas</li><li>Pégala abajo y guarda</li></ol></div><div class="form"><div class="field"><label>URL del servidor de sincronización</label><input id="sSyncUrl" type="text" placeholder="Ej: https://cotizador-sync.onrender.com/api/sync"></div><div><button class="primary" onclick="saveSettings()">💾 Guardar configuración</button></div></div></div></section></div></main></div><div id="toast" class="toast"></div><div id="printArea" style="display:none"></div><script>
 const LOGO_URL='https://raw.githubusercontent.com/JvInternational/cotizador/main/logo.png';
 const STORAGE_KEY='cotizador_state';
 const SYNC_KEY='cotizador_sync_id';
-let state={quotes:[],clients:[],base:[],settings:{waste:2,comm:5,profit:25}};
+const INITIAL_BASE=[{"name":"24/1 OE 100%","colors":{"PFD":{"hilo":56.5,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":56.5,"tejido":8.5,"acabado":22},"CLARO":{"hilo":56.5,"tejido":8.5,"acabado":20},"COLORES":{"hilo":57.5,"tejido":8.5,"acabado":23}}},{"name":"20/1 Pima","colors":{"PFD":{"hilo":78,"tejido":10,"acabado":25},"BLANCO":{"hilo":78,"tejido":10,"acabado":28}}}];
+
+let state={quotes:[],clients:[],base:INITIAL_BASE,settings:{waste:2,comm:5,profit:25,syncUrl:''}};
 let quotePhotos=[];
+
 function init(){
   loadState();
   setDefaultDate();
@@ -46,18 +49,22 @@ function init(){
   loadSettings();
   tryAutoSync();
 }
+
 function loadState(){
   const saved=localStorage.getItem(STORAGE_KEY);
   if(saved){
-    try{state=JSON.parse(saved);} catch(e){console.error('Error loading state:',e);}
+    try{state=JSON.parse(saved);}catch(e){console.error('Error loading state:',e);}
   }
 }
+
 function saveState(){
   localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
 }
+
 function setDefaultDate(){
   document.getElementById('qDate').valueAsDate=new Date();
 }
+
 function handlePhotos(e){
   const files=Array.from(e.target.files||[]);
   Promise.all(files.map(f=>new Promise((resolve,reject)=>{
@@ -67,13 +74,16 @@ function handlePhotos(e){
     r.readAsDataURL(f);
   }))).then(imgs=>{quotePhotos=imgs;renderPhotoPreview();});
 }
+
 function renderPhotoPreview(){
   const p=document.getElementById('photoPreview');
   if(p)p.textContent=quotePhotos.length?`${quotePhotos.length} foto(s) seleccionada(s).`:'Sin fotos seleccionadas.';
 }
+
 function num(v){return parseFloat(v)||0}
-function money(v){return '$'+v.toFixed(2)}
+function money(v){return'$'+v.toFixed(2)}
 function esc(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
 function calc(){
   const x=getCalc();
   if(!x.f){document.getElementById('calcResult').innerHTML='<p style="color:var(--danger)">Selecciona una tela y color</p>';return}
@@ -92,6 +102,7 @@ function calc(){
   `;
   document.getElementById('calcResult').innerHTML=html;
 }
+
 function getCalc(){
   const pcsKg=num(document.getElementById('qPcsKg').value),
   fx=num(document.getElementById('qFx').value),
@@ -119,11 +130,13 @@ function getCalc(){
   const grand=cost+commAmount+profitAmount;
   return{f,fabric,thread,dye,fabricPc,print,oh,trims,waste,comm:commAmount,profit:profitAmount,cost,grand,qty,total:grand*qty,color:colorKey};
 }
+
 function fillFabric(){
   const sel=document.getElementById('qFabric');
   sel.innerHTML='<option>Seleccionar...</option>';
   state.base.forEach(f=>{sel.innerHTML+=`<option value="${f.name}">${f.name}</option>`});
 }
+
 function fillColors(){
   const fabricId=document.getElementById('qFabric').value,
   f=state.base.find(x=>x.name===fabricId);
@@ -131,10 +144,12 @@ function fillColors(){
   sel.innerHTML='<option>Seleccionar...</option>';
   if(f)Object.keys(f.colors).forEach(c=>{sel.innerHTML+=`<option value="${c}">${c}</option>`});
 }
+
 function nextFolio(){
   const n=state.quotes.length+1;
-  return 'COT-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0');
+  return 'COT-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0')
 }
+
 function saveQuote(){
   const x=getCalc();
   if(!x.f){toast('Selecciona una tela y color');return}
@@ -157,11 +172,13 @@ function saveQuote(){
   };
   state.quotes.push(q);
   saveState();
+  syncToCloud();
   toast('Cotización guardada ✓');
   resetQuote();
   renderDashboard();
   renderHistory();
 }
+
 function resetQuote(){
   document.getElementById('qClient').value='';
   document.getElementById('qStyle').value='';
@@ -177,6 +194,7 @@ function resetQuote(){
   fillColors();
   document.getElementById('calcResult').innerHTML='';
 }
+
 function doPrint(){
   const x=getCalc(),
   client=document.getElementById('qClient').value||'Público general',
@@ -208,17 +226,20 @@ function doPrint(){
   </div>`;
   window.print();
 }
+
 function renderDashboard(){
   document.getElementById('kQuotes').textContent=state.quotes.length;
   document.getElementById('kClients').textContent=state.clients.length;
   document.getElementById('kLast').textContent=state.quotes.length>0?state.quotes[state.quotes.length-1].folio:'-';
 }
+
 function renderHistory(){
   const term=(document.getElementById('historySearch')?.value||'').toLowerCase();
   const qs=state.quotes.filter(q=>(q.folio+' '+q.client).toLowerCase().includes(term));
   const html=qs.length?`<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Cliente</th><th>Tela</th><th>Color</th><th>Fecha</th><th>Acciones</th></tr>${qs.map(q=>`<tr><td>${q.folio}</td><td>${esc(q.client)}</td><td>${esc(q.fabric)}</td><td>${esc(q.color)}</td><td>${q.date}</td><td><button onclick="loadQuote('${q.id}')" style="padding:4px 8px;font-size:12px">Editar</button><button onclick="delQuote('${q.id}')" style="padding:4px 8px;font-size:12px;background:#fee;color:#c00">Borrar</button></td></tr>`).join('')}</table></div>`:'<p style="color:var(--muted)">Sin cotizaciones aún.</p>';
   document.getElementById('historyTable').innerHTML=html;
 }
+
 function loadQuote(id){
   const q=state.quotes.find(x=>x.id===id);
   if(!q)return;
@@ -238,54 +259,66 @@ function loadQuote(id){
   renderPhotoPreview();
   calc();
 }
+
 function delQuote(id){
   if(confirm('¿Eliminar esta cotización?')){
     state.quotes=state.quotes.filter(x=>x.id!==id);
     saveState();
     renderHistory();
+    syncToCloud();
     toast('Cotización eliminada');
   }
 }
+
 function addClient(){
   const name=document.getElementById('cName').value.trim();
   if(!name)return toast('Escribe el nombre del cliente');
   state.clients.push({id:crypto.randomUUID(),name,contact:document.getElementById('cContact').value});
   saveState();
+  syncToCloud();
   toast('Cliente agregado ✓');
   document.getElementById('cName').value='';
   document.getElementById('cContact').value='';
   updateClientList();
   renderClients();
 }
+
 function updateClientList(){
   const d=document.getElementById('clientList');
   if(d)d.innerHTML=state.clients.map(c=>`<option value="${esc(c.name)}">`).join('');
 }
+
 function renderClients(){
   const html=state.clients.length?`<div class="table-wrap"><table class="table"><tr><th>Nombre</th><th>Contacto</th><th>Acciones</th></tr>${state.clients.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.contact)}</td><td><button onclick="delClient('${c.id}')" style="padding:4px 8px;font-size:12px;background:#fee;color:#c00">Borrar</button></td></tr>`).join('')}</table></div>`:'<p style="color:var(--muted)">Sin clientes registrados.</p>';
   document.getElementById('clientsTable').innerHTML=html;
 }
+
 function delClient(id){
   if(confirm('¿Eliminar este cliente?')){
     state.clients=state.clients.filter(x=>x.id!==id);
     saveState();
     updateClientList();
     renderClients();
+    syncToCloud();
     toast('Cliente eliminado');
   }
 }
+
 function addBase(){
   const name=prompt('Nombre de la tela:');
   if(!name)return;
   state.base.push({name,colors:{}});
   saveState();
   fillFabric();
+  syncToCloud();
   toast('Tela agregada');
 }
+
 function renderBase(){
   const html=state.base.length?`<div class="table-wrap"><table class="table"><tr><th>Tela</th><th>Colores</th><th>Acciones</th></tr>${state.base.map(f=>`<tr><td>${esc(f.name)}</td><td>${Object.keys(f.colors).join(', ')||'-'}</td><td><button onclick="editFabric('${state.base.indexOf(f)}')" style="padding:4px 8px;font-size:12px">Editar</button><button onclick="delFabric('${state.base.indexOf(f)}')" style="padding:4px 8px;font-size:12px;background:#fee;color:#c00">Borrar</button></td></tr>`).join('')}</table></div>`:'<p style="color:var(--muted)">Sin telas en la base.</p>';
   document.getElementById('baseTable').innerHTML=html;
 }
+
 function editFabric(idx){
   const f=state.base[idx];
   if(!f)return;
@@ -298,8 +331,10 @@ function editFabric(idx){
   saveState();
   fillColors();
   renderBase();
+  syncToCloud();
   toast('Tela actualizada');
 }
+
 function delFabric(idx){
   if(confirm('¿Eliminar esta tela?')){
     state.base.splice(idx,1);
@@ -307,15 +342,18 @@ function delFabric(idx){
     fillFabric();
     fillColors();
     renderBase();
+    syncToCloud();
     toast('Tela eliminada');
   }
 }
+
 function loadSettings(){
   document.getElementById('sWaste').value=state.settings.waste||2;
   document.getElementById('sComm').value=state.settings.comm||5;
   document.getElementById('sProfit').value=state.settings.profit||25;
   document.getElementById('sSyncUrl').value=state.settings.syncUrl||'';
 }
+
 function saveSettings(){
   state.settings.waste=parseFloat(document.getElementById('sWaste').value)||2;
   state.settings.comm=parseFloat(document.getElementById('sComm').value)||5;
@@ -326,9 +364,9 @@ function saveSettings(){
   toast('Configuración guardada ✓');
   calc();
 }
-function applySettings(){
-  // Aplicar configuraciones si es necesario
-}
+
+function applySettings(){}
+
 function showView(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(view).classList.add('active');
@@ -338,12 +376,25 @@ function showView(view){
   if(view==='clients')renderClients();
   if(view==='base')renderBase();
 }
+
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
+
+function updateSyncStatus(success){
+  const status=document.getElementById('syncStatus');
+  if(success){
+    status.innerHTML='<span class="sync-status synced">✓ Sincronizado</span>';
+    setTimeout(()=>status.innerHTML='',3000);
+  }else{
+    status.innerHTML='<span class="sync-status error">✗ Error</span>';
+    setTimeout(()=>status.innerHTML='',5000);
+  }
+}
+
 function exportData(){
   const data=JSON.stringify(state,null,2);
   const blob=new Blob([data],{type:'application/json'});
@@ -355,6 +406,7 @@ function exportData(){
   URL.revokeObjectURL(url);
   toast('Datos exportados ✓');
 }
+
 function importData(){
   const input=document.createElement('input');
   input.type='file';
@@ -378,11 +430,10 @@ function importData(){
   };
   input.click();
 }
+
 function syncToCloud(){
   const syncUrl=state.settings?.syncUrl;
   if(!syncUrl){
-    toast('Configura la URL de sincronización en Configuración');
-    showView('settings');
     return;
   }
   const syncId=localStorage.getItem(SYNC_KEY)||crypto.randomUUID();
@@ -393,14 +444,15 @@ function syncToCloud(){
     body:JSON.stringify({syncId,data:state,timestamp:new Date().toISOString()})
   }).then(r=>{
     if(r.ok){
-      toast('Sincronizado con el servidor ✓');
+      updateSyncStatus(true);
     }else{
-      toast('Error al sincronizar: '+r.statusText);
+      updateSyncStatus(false);
     }
   }).catch(e=>{
-    toast('Error de conexión: '+e.message);
+    updateSyncStatus(false);
   });
 }
+
 function tryAutoSync(){
   const syncUrl=state.settings?.syncUrl;
   if(!syncUrl)return;
@@ -420,5 +472,6 @@ function tryAutoSync(){
     }).catch(e=>console.error('Sync error:',e));
   }
 }
+
 window.addEventListener('load',init);
 </script></body></html>
