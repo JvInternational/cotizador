@@ -1,128 +1,76 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Garment Costing System - JV International</title>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-<style>
-:root{--bg:#f4f6f8;--panel:#fff;--ink:#17212b;--muted:#6b7280;--line:#e5e7eb;--accent:#0f6fb2;--accent2:#0b5d94;--ok:#168a55;--danger:#c0392b;--shadow:0 8px 28px rgba(16,24,40,.08)}*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.side{width:245px;background:#13283a;color:#fff;padding:24px 16px;position:fixed;left:0;top:0;bottom:0}.brand{font-weight:800;font-size:20px;letter-spacing:.2px;margin:4px 10px 4px}.sub{font-size:12px;color:#a9bac8;margin:0 10px 28px}.nav button{width:100%;text-align:left;background:transparent;border:0;color:#dbe7ef;padding:12px 14px;border-radius:9px;margin:3px 0}.nav button:hover,.nav button.active{background:#21435b;color:#fff}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:27px}.top p{margin:5px 0 0;color:var(--muted)}.btn{border:0;border-radius:8px;padding:10px 15px;background:var(--accent);color:#fff;font-weight:700}.btn:hover{background:var(--accent2)}.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.danger{background:#fff;color:var(--danger);border:1px solid #f1c7c2}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}.label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}.value{font-size:26px;font-weight:800;margin-top:7px}.grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:18px}.panel h2{font-size:17px;margin:0 0 16px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:12px;font-weight:700;color:#4b5563;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid #d7dce1;border-radius:8px;padding:10px;background:#fff;color:#111827}.field textarea{min-height:84px;resize:vertical}.full{grid-column:1/-1}.section-title{font-size:13px;font-weight:800;color:#51606e;text-transform:uppercase;letter-spacing:.6px;margin:4px 0 12px}.calc{display:grid;grid-template-columns:1fr auto;gap:10px;font-size:14px}.calc div{padding:6px 0;border-bottom:1px solid #f0f1f2}.calc .n{text-align:right;font-variant-numeric:tabular-nums}.grand{font-size:24px;font-weight:900;color:var(--accent);border-top:2px solid #dbe8f2;margin-top:8px;padding-top:12px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.table th{background:#f7f8fa;color:#56616c;font-size:11px;text-transform:uppercase}.right{text-align:right!important}.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#eef6fb;color:#075a8e;font-size:11px;font-weight:700}.empty{text-align:center;color:var(--muted);padding:30px}.quote-head{display:flex;justify-content:space-between;gap:20px}.quote-total{background:#eef6fb;border-radius:10px;padding:16px;text-align:right;min-width:220px}.quote-total .big{font-size:28px;font-weight:900;color:var(--accent)}.mini{font-size:12px;color:var(--muted)}.search{max-width:300px}.hidden{display:none!important}.toast{position:fixed;right:24px;bottom:24px;background:#17212b;color:#fff;padding:12px 16px;border-radius:9px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.2s;z-index:20}.toast.show{opacity:1;transform:none}@media(max-width:900px){.side{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:20px}.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}@media(max-width:650px){.side{position:static;width:100%;min-height:auto}.app{display:block}.main{margin:0;width:100%}.cards,.form{grid-template-columns:1fr}.top{align-items:flex-start;gap:10px;flex-direction:column}}
-@media print{.side,.top .actions,.toolbar,.no-print{display:none!important}.main{margin:0;width:100%;padding:0}.panel{box-shadow:none;border:0}.print-only{display:block!important}body{background:#fff}}
-.print-only{display:none}
-@page{size:Letter portrait;margin:0.25in}
-@media print{
-html,body{width:100%;height:100vh!important;margin:0!important;padding:0!important;overflow:hidden!important}
-body{font-size:10px!important;background:#fff!important}
-.side,.top .actions,.toolbar,.no-print{display:none!important}
-.main{margin:0!important;width:100%!important;padding:0!important}
-.view{display:none!important}
-#new{display:block!important}
-#new>.grid2{display:block!important}
-#new>.grid2>.panel:first-child{display:none!important}
-#calcPanel{display:none!important}
-.print-only{display:block!important;width:100%!important;margin:0!important;padding:0!important;box-shadow:none!important;border:0!important}
-.panel{box-shadow:none!important;border:0!important}
-#printArea{max-height:96vh!important;overflow:hidden!important;page-break-inside:avoid!important;break-inside:avoid!important}
-}
-.pdf-container{max-width:700px;margin:0 auto;padding:10px;background:#fff;font-family:Inter,Segoe UI,Arial,sans-serif;color:#17212b}
-.pdf-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0b5d94;padding-bottom:8px;margin-bottom:10px}
-.pdf-logo{background:#0b5d94;padding:4px 10px;border-radius:4px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
-.pdf-meta-box{text-align:right}
-.pdf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:#f8fafc;padding:8px;border-radius:6px;margin-bottom:10px;font-size:11px}
-.pdf-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:10px}
-.pdf-table th,.pdf-table td{padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:left}
-.pdf-table th{background:#f1f5f9;color:#334155;font-weight:700;text-transform:uppercase;font-size:10px}
-.pdf-totals{background:#f0f9ff;border-radius:6px;padding:8px 12px;text-align:right;margin-top:5px}
-</style></head><body><div class="app"><aside class="side">
-<div style="background:#0b5d94;padding:8px 12px;border-radius:6px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.2);color:#fff"><span style="font-weight:900;font-size:15px;letter-spacing:1px;line-height:1">JV</span><span style="font-weight:700;font-size:7px;letter-spacing:1.5px;margin-top:2px;text-transform:uppercase">International</span></div>
-<div class="brand">QUOTER</div><div class="sub">Garment Costing System</div><div class="nav"><button data-view="dashboard" class="active">▦ Dashboard</button><button data-view="new">＋ New Quote</button><button data-view="history">▤ History</button><button data-view="clients">♙ Clients</button><button data-view="base">▣ Cost Base</button><button data-view="settings">⚙ Settings</button></div></aside><main class="main"><div class="top"><div><h1 id="title">Dashboard</h1><p id="subtitle">Overview of quotes and pricing.</p></div><div class="actions"><button class="btn" onclick="showNewQuote()">+ New Quote</button></div></div>
-<section id="dashboard" class="view"><div class="cards"><div class="card"><div class="label">Saved Quotes</div><div class="value" id="kQuotes">0</div></div><div class="card"><div class="label">Clients</div><div class="value" id="kClients">0</div></div><div class="card"><div class="label">Latest Quote</div><div class="value" id="kLast">—</div></div><div class="card"><div class="label">Avg. USD / Piece</div><div class="value" id="kAvg">$0.00</div></div></div><div class="grid2"><div class="panel"><h2>Latest Quotes</h2><div id="dashQuotes"></div></div><div class="panel"><h2>Calculation Model</h2><div class="calc"><div>Fabric Cost + Waste</div><div class="n">MXN/kg</div><div>Logistics</div><div class="n">MXN/kg</div><div>Unit Cost</div><div class="n">USD/pc</div><div>Thread + Print + Dye + Trims</div><div class="n">USD/pc</div><div>Overhead / C&amp;S</div><div class="n">35%</div><div>Commission</div><div class="n">5%</div><div>Profit</div><div class="n">10%</div></div></div></div></section>
-<section id="new" class="view hidden"><div class="grid2"><div class="panel"><div class="section-title" id="formTitleText">Quote Information</div><div class="form"><div class="field"><label>Client</label><input id="qClient" list="clientList" placeholder="Client Name"><datalist id="clientList"></datalist></div><div class="field"><label>Date</label><input id="qDate" type="date"></div><div class="field full"><label>Style / Body</label><input id="qStyle" placeholder="Ex. Crewneck T-Shirt"></div><div class="field"><label>Fabric Type</label><select id="qFabric"></select></div><div class="field"><label>Color</label><select id="qColor"></select></div><div class="field"><label>Quantity (Pieces)</label><input id="qQty" type="number" min="1" value="1000"></div><div class="field"><label>Pieces per kg</label><input id="qPcsKg" type="number" min="0.01" step="0.01"></div><div class="field"><label>Logistics (MXN/kg)</label><input id="qLogistics" type="number" min="0" step="0.01"></div><div class="field"><label>Exchange Rate MXN/USD</label><input id="qFx" type="number" min="0.01" step="0.01"></div><div class="field"><label>THREAD (USD/pc)</label><input id="qThread" type="number" min="0" step="0.01"></div><div class="field"><label>PRINT (USD/pc)</label><input id="qPrint" type="number" min="0" step="0.01"></div><div class="field"><label>DYE (USD/pc)</label><input id="qDye" type="number" min="0" step="0.01"></div><div class="field"><label>TRIMS (USD/pc)</label><input id="qTrims" type="number" min="0" step="0.01"></div><div class="field full"><label>Notes</label><textarea id="qNotes" placeholder="Quote remarks..."></textarea></div><div class="field full"><label>Photos</label><input id="qPhotos" type="file" accept="image/*" multiple><div class="mini" id="photoPreview" style="margin-top:6px"></div></div></div><div class="toolbar"><button class="btn" id="saveBtnText" onclick="saveQuote()">Save Quote</button><button class="btn secondary" onclick="printQuote()">Print / PDF</button><button class="btn secondary" onclick="resetQuote(true)">Clear</button></div></div><div class="panel" id="calcPanel"><div class="quote-head"><div><div class="section-title">Result</div><div class="mini" id="resultRef">Unsaved</div></div><div class="quote-total"><div class="mini">FINAL PRICE USD / PIECE</div><div class="big" id="rUnit">$0.00</div><div class="mini" id="rTotal">Total: $0.00 USD</div></div></div><div style="height:12px"></div><div class="calc" id="calc"></div></div></div><div class="panel print-only" id="printArea"></div></section>
-<section id="history" class="view hidden"><div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><h2>Quote History</h2><input class="field input search" id="historySearch" placeholder="Search folio or client" oninput="renderHistory()"></div><div class="toolbar" style="margin-bottom: 15px;"><button class="btn secondary" onclick="exportHistoryCSV()">⬇ Export Database (CSV)</button></div><div id="historyTable"></div></div></section>
-<section id="clients" class="view hidden"><div class="panel"><h2>Clients</h2><div class="form"><div class="field"><label>Client Name</label><input id="cName"></div><div class="field"><label>Contact / Email</label><input id="cContact"></div><div class="field"><label>Phone</label><input id="cPhone"></div><div class="field"><label>Notes</label><input id="cNotes"></div></div><div class="toolbar"><button class="btn" onclick="addClient()">Add Client</button></div></div><div class="panel"><div id="clientsTable"></div></div></section>
-<section id="base" class="view hidden"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2>Cost Base</h2><div class="mini">Editable values synced in the cloud.</div></div><button class="btn" onclick="addFabric()">+ Add Fabric</button></div><div style="height:14px"></div><div id="baseTable"></div></div></section>
-<section id="settings" class="view hidden"><div class="panel"><h2>Margin Settings</h2><div class="form"><div class="field"><label>Waste</label><input id="sWaste" type="number" step="0.1"></div><div class="field"><label>Overhead / C&amp;S</label><input id="sOverhead" type="number" step="0.1"></div><div class="field"><label>Commission</label><input id="sCommission" type="number" step="0.1"></div><div class="field"><label>Profit</label><input id="sProfit" type="number" step="0.1"></div></div><div class="toolbar"><button class="btn" onclick="saveSettings()">Save Settings</button><button class="btn secondary" onclick="exportData()">Export JSON Backup</button><label class="btn secondary" style="display:inline-block">Import JSON Backup<input type="file" accept="application/json" hidden onchange="importData(event)"></label><button class="btn danger" onclick="clearAll()">Clear Cloud Data</button></div></div></section>
-</main></div><div id="toast" class="toast"></div>
-<script>
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "tu-proyecto.firebaseapp.com",
-  databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com",
-  projectId: "tu-proyecto",
-  storageBucket: "tu-proyecto.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const dbRef = firebase.database().ref('jv_international');
+Garment Costing System - JV International
 
-const INITIAL={"base":[{"name":"24/1 OE 100%","colors":{"PFD":{"hilo":56.5,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":56.5,"tejido":8.5,"acabado":22},"CLARO":{"hilo":56.5,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":56.5,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":56.5,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 100%","colors":{"PFD":{"hilo":77,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":77,"tejido":8.5,"acabado":22},"CLARO":{"hilo":77,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":77,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":77,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 50/50%","colors":{"PFD":{"hilo":67,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":67,"tejido":8.5,"acabado":22},"CLARO":{"hilo":67,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":67,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":67,"tejido":8.5,"acabado":49}}},{"name":"20/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"18/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 95/5% C/S","colors":{"PFD":{"hilo":0,"tejido":9.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":9.5,"acabado":22},"CLARO":{"hilo":0,"tejido":9.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":9.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":9.5,"acabado":50}}}],"defaults":{"fabric":"24/1 OE 100%","color":"MEDIO","pcsKg":4,"logistics":17,"fx":16.7,"thread":0.1,"print":0.5,"dye":0.55,"trims":0.18,"waste":0.03,"overhead":0.35,"commission":0.05,"profit":0.1}};
+const INITIAL={"base":\[{"name":"24/1 OE 100%","colors":{"PFD":{"hilo":56.5,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":56.5,"tejido":8.5,"acabado":22},"CLARO":{"hilo":56.5,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":56.5,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":56.5,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 100%","colors":{"PFD":{"hilo":77,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":77,"tejido":8.5,"acabado":22},"CLARO":{"hilo":77,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":77,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":77,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 50/50%","colors":{"PFD":{"hilo":67,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":67,"tejido":8.5,"acabado":22},"CLARO":{"hilo":67,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":67,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":67,"tejido":8.5,"acabado":49}}},{"name":"20/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"18/1 OE 100%","colors":{"PFD":{"hilo":0,"tejido":8.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":8.5,"acabado":22},"CLARO":{"hilo":0,"tejido":8.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":8.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":8.5,"acabado":50}}},{"name":"30/1 PDO 95/5% C/S","colors":{"PFD":{"hilo":0,"tejido":9.5,"acabado":19},"BLANCO":{"hilo":0,"tejido":9.5,"acabado":22},"CLARO":{"hilo":0,"tejido":9.5,"acabado":31},"MEDIO":{"hilo":0,"tejido":9.5,"acabado":46},"OSCURO":{"hilo":0,"tejido":9.5,"acabado":50}}}\],"defaults":{"fabric":"24/1 OE 100%","color":"MEDIO","pcsKg":4,"logistics":17,"fx":16.7,"thread":0.1,"print":0.5,"dye":0.55,"trims":0.18,"waste":0.03,"overhead":0.35,"commission":0.05,"profit":0.1}};
 
-let state = {base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
+let state = {base:INITIAL.base,defaults:INITIAL.defaults,quotes:\[\],clients:\[\]};
 let editingQuoteId = null;
 
 const titles={
-  dashboard:['Dashboard','Overview of quotes and pricing.'],
-  new:['New Quote','Calculate, save, and print a quote.'],
-  history:['History','View and retrieve saved quotes.'],
-  clients:['Clients','Basic client directory.'],
-  base:['Cost Base','Editable cost matrix.'],
-  settings:['Settings','Margins, backup, and cloud data.']
+dashboard:\['Dashboard','Overview of quotes and pricing.'\],
+new:\['New Quote','Calculate, save, and print a quote.'\],
+history:\['History','View and retrieve saved quotes.'\],
+clients:\['Clients','Basic client directory.'\],
+base:\['Cost Base','Editable cost matrix.'\],
+settings:\['Settings','Margins, backup, and cloud data.'\]
 };
 
 const LOCAL_KEY = 'jv_international_quoter_state_v1';
 
 function saveLocal(){
-  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }
-  catch(e){ console.warn('Local backup could not be saved:', e); }
+try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }
+catch(e){ console.warn('Local backup could not be saved:', e); }
 }
 
 function loadLocal(){
-  try{
-    const raw=localStorage.getItem(LOCAL_KEY);
-    if(!raw)return false;
-    const data=JSON.parse(raw);
-    if(!data)return false;
-    state={
-      base:data.base||INITIAL.base,
-      defaults:data.defaults||INITIAL.defaults,
-      quotes:Array.isArray(data.quotes)?data.quotes:[],
-      clients:Array.isArray(data.clients)?data.clients:[]
-    };
-    return true;
-  }catch(e){ return false; }
+try{
+const raw=localStorage.getItem(LOCAL_KEY);
+if(!raw)return false;
+const data=JSON.parse(raw);
+if(!data)return false;
+state={
+base:data.base||INITIAL.base,
+defaults:data.defaults||INITIAL.defaults,
+quotes:Array.isArray(data.quotes)?data.quotes:\[\],
+clients:Array.isArray(data.clients)?data.clients:\[\]
+};
+return true;
+}catch(e){ return false; }
 }
 
 function persist(){
-  saveLocal();
-  try{ dbRef.set(state).catch(e=>console.warn('Firebase sync failed:',e)); }
-  catch(e){ console.warn('Firebase sync failed:',e); }
+saveLocal();
+try{ dbRef.set(state).catch(e=>console.warn('Firebase sync failed:',e)); }
+catch(e){ console.warn('Firebase sync failed:',e); }
 }
 
 const hadLocalData=loadLocal();
 
 dbRef.on('value',(snapshot)=>{
-  const data=snapshot.val();
-  if(data){
-    state={
-      base:data.base||INITIAL.base,
-      defaults:data.defaults||INITIAL.defaults,
-      quotes:Array.isArray(data.quotes)?data.quotes:[],
-      clients:Array.isArray(data.clients)?data.clients:[]
-    };
-    saveLocal();
-  }else if(!hadLocalData){
-    state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
-    persist();
-  }
-  refreshCurrentView();
+const data=snapshot.val();
+if(data){
+state={
+base:data.base||INITIAL.base,
+defaults:data.defaults||INITIAL.defaults,
+quotes:Array.isArray(data.quotes)?data.quotes:\[\],
+clients:Array.isArray(data.clients)?data.clients:\[\]
+};
+saveLocal();
+}else if(!hadLocalData){
+state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:\[\],clients:\[\]};
+persist();
+}
+refreshCurrentView();
 });
 
 function refreshCurrentView(){
-  const activeBtn = document.querySelector('.nav button.active');
-  const v = activeBtn ? activeBtn.dataset.view : 'dashboard';
-  if(v==='dashboard') renderDashboard();
-  if(v==='history') renderHistory();
-  if(v==='clients') renderClients();
-  if(v==='base') renderBase();
-  if(v==='settings') loadSettings();
-  updateClientList();
+const activeBtn = document.querySelector('.nav button.active');
+const v = activeBtn ? activeBtn.dataset.view : 'dashboard';
+if(v==='dashboard') renderDashboard();
+if(v==='history') renderHistory();
+if(v==='clients') renderClients();
+if(v==='base') renderBase();
+if(v==='settings') loadSettings();
+updateClientList();
 }
 
 function money(n){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2}).format(Number(n)||0)}
@@ -130,425 +78,422 @@ function num(n){return Number(n)||0}
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
 
 function showView(v){
-  document.querySelectorAll('.view').forEach(x=>x.classList.add('hidden'));
-  document.getElementById(v).classList.remove('hidden');
-  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
-  document.getElementById('title').textContent=titles[v][0];
-  document.getElementById('subtitle').textContent=titles[v][1];
-  refreshCurrentView();
-  if(v==='new' && !editingQuoteId) initQuote();
+document.querySelectorAll('.view').forEach(x=>x.classList.add('hidden'));
+document.getElementById(v).classList.remove('hidden');
+document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view=v));
+document.getElementById('title').textContent=titles\[v\]\[0\];
+document.getElementById('subtitle').textContent=titles\[v\]\[1\];
+refreshCurrentView();
+if(v='new' && !editingQuoteId) initQuote();
 }
 
 function showNewQuote(){
-  editingQuoteId = null;
-  document.getElementById('formTitleText').textContent = 'Quote Information';
-  document.getElementById('saveBtnText').textContent = 'Save Quote';
-  showView('new');
-  resetQuote(true);
+editingQuoteId = null;
+document.getElementById('formTitleText').textContent = 'Quote Information';
+document.getElementById('saveBtnText').textContent = 'Save Quote';
+showView('new');
+resetQuote(true);
 }
 
 function init(){
-  document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
-  fillFabric();
-  document.getElementById('qFabric').onchange=fillColors;
-  ['qFabric','qColor','qPcsKg','qLogistics','qFx','qThread','qPrint','qDye','qTrims','qQty'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
-  document.getElementById('qColor').addEventListener('change',()=>{syncBase();calc()});
-  document.getElementById('qDate').value=new Date().toISOString().slice(0,10);
-  const ph=document.getElementById('qPhotos');
-  if(ph)ph.addEventListener('change',handlePhotos);
-  renderPhotoPreview();
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+fillFabric();
+document.getElementById('qFabric').onchange=fillColors;
+\['qFabric','qColor','qPcsKg','qLogistics','qFx','qThread','qPrint','qDye','qTrims','qQty'\].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+document.getElementById('qColor').addEventListener('change',()=>{syncBase();calc()});
+document.getElementById('qDate').value=new Date().toISOString().slice(0,10);
+const ph=document.getElementById('qPhotos');
+if(ph)ph.addEventListener('change',handlePhotos);
+renderPhotoPreview();
 }
 
 function fillFabric(){
-  const s=document.getElementById('qFabric');
-  if(!s) return;
-  s.innerHTML=state.base.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
-  fillColors();
+const s=document.getElementById('qFabric');
+if(!s) return;
+s.innerHTML=state.base.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
+fillColors();
 }
 
 function fillColors(){
-  const f=state.base[num(document.getElementById('qFabric').value)]||state.base[0];
-  const s=document.getElementById('qColor');
-  if(!s || !f) return;
-  s.innerHTML=Object.keys(f.colors).map(c=>`<option>${c}</option>`).join('');
-  syncBase();
-  calc();
+const f=state.base\[num(document.getElementById('qFabric').value)\]||state.base\[0\];
+const s=document.getElementById('qColor');
+if(!s || !f) return;
+s.innerHTML=Object.keys(f.colors).map(c=>`<option>${c}</option>`).join('');
+syncBase();
+calc();
 }
 
 function syncBase(){
-  const f=state.base[num(document.getElementById('qFabric').value)]||state.base[0];
-  const c=document.getElementById('qColor').value;
-  const d=f?.colors[c]||{};
-  document.getElementById('qThread').value=state.defaults.thread;
-  document.getElementById('qPrint').value=state.defaults.print;
-  document.getElementById('qDye').value=state.defaults.dye;
-  document.getElementById('qTrims').value=state.defaults.trims;
-  document.getElementById('qLogistics').value=state.defaults.logistics;
-  document.getElementById('qFx').value=state.defaults.fx;
+const f=state.base\[num(document.getElementById('qFabric').value)\]||state.base\[0\];
+const c=document.getElementById('qColor').value;
+const d=f?.colors\[c\]||{};
+document.getElementById('qThread').value=state.defaults.thread;
+document.getElementById('qPrint').value=state.defaults.print;
+document.getElementById('qDye').value=state.defaults.dye;
+document.getElementById('qTrims').value=state.defaults.trims;
+document.getElementById('qLogistics').value=state.defaults.logistics;
+document.getElementById('qFx').value=state.defaults.fx;
 }
 
 function initQuote(){
-  fillFabric();
-  document.getElementById('qDate').value=new Date().toISOString().slice(0,10);
-  const ph=document.getElementById('qPhotos');
-  if(ph)ph.onchange=handlePhotos;
-  document.getElementById('qClient').focus();
-  updateClientList();
-  calc();
-  renderPhotoPreview();
+fillFabric();
+document.getElementById('qDate').value=new Date().toISOString().slice(0,10);
+const ph=document.getElementById('qPhotos');
+if(ph)ph.onchange=handlePhotos;
+document.getElementById('qClient').focus();
+updateClientList();
+calc();
+renderPhotoPreview();
 }
 
-let quotePhotos=[];
+let quotePhotos=\[\];
 function handlePhotos(e){
-  const files=Array.from(e.target.files||[]);
-  Promise.all(files.map(f=>new Promise((resolve,reject)=>{
-    const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);
-  }))).then(imgs=>{quotePhotos=imgs;renderPhotoPreview()});
+const files=Array.from(e.target.files||\[\]);
+Promise.all(files.map(f=>new Promise((resolve,reject)=>{
+const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);
+}))).then(imgs=>{quotePhotos=imgs;renderPhotoPreview()});
 }
 function renderPhotoPreview(){
-  const p=document.getElementById('photoPreview');
-  if(p)p.textContent=quotePhotos.length?`${quotePhotos.length} photo(s) selected.`:'No photos selected.';
+const p=document.getElementById('photoPreview');
+if(p)p.textContent=quotePhotos.length?`${quotePhotos.length} photo(s) selected.`:'No photos selected.';
 }
 
 function getCalc(){
-  const pcsKg=num(document.getElementById('qPcsKg').value),fx=num(document.getElementById('qFx').value),qty=num(document.getElementById('qQty').value),log=num(document.getElementById('qLogistics').value);
-  const f=state.base[num(document.getElementById('qFabric').value)]||state.base[0],color=document.getElementById('qColor').value,d=f?.colors[color]||{hilo:0,tejido:0,acabado:0};
-  const hilo=num(d.hilo),tejido=num(d.tejido),acabado=num(d.acabado);
-  const subtotal=hilo+tejido+acabado,waste=subtotal*num(state.defaults.waste),fabricKg=subtotal+waste,totalMxnKg=fabricKg+log,totalUsdKg=fx?totalMxnKg/fx:0,fabricPc=pcsKg?totalUsdKg/pcsKg:0;
-  const thread=num(document.getElementById('qThread').value),print=num(document.getElementById('qPrint').value),dye=num(document.getElementById('qDye').value),trims=num(document.getElementById('qTrims').value);
-  const oh=(fabricPc+thread+print+dye)*num(state.defaults.overhead),prod=fabricPc+thread+print+dye+oh+trims,comm=prod*num(state.defaults.commission),profit=prod*num(state.defaults.profit),grand=prod+comm+profit;
-  return {f,color,pcsKg,fx,qty,log,hilo,tejido,acabado,subtotal,waste,fabricKg,totalMxnKg,totalUsdKg,fabricPc,thread,print,dye,trims,oh,prod,comm,profit,grand,total:grand*qty}
+const pcsKg=num(document.getElementById('qPcsKg').value),fx=num(document.getElementById('qFx').value),qty=num(document.getElementById('qQty').value),log=num(document.getElementById('qLogistics').value);
+const f=state.base\[num(document.getElementById('qFabric').value)\]||state.base\[0\],color=document.getElementById('qColor').value,d=f?.colors\[color\]||{hilo:0,tejido:0,acabado:0};
+const hilo=num(d.hilo),tejido=num(d.tejido),acabado=num(d.acabado);
+const subtotal=hilo+tejido+acabado,waste=subtotal*num(state.defaults.waste),fabricKg=subtotal+waste,totalMxnKg=fabricKg+log,totalUsdKg=fx?totalMxnKg/fx:0,fabricPc=pcsKg?totalUsdKg/pcsKg:0;
+const thread=num(document.getElementById('qThread').value),print=num(document.getElementById('qPrint').value),dye=num(document.getElementById('qDye').value),trims=num(document.getElementById('qTrims').value);
+const oh=(fabricPc+thread+print+dye)*num(state.defaults.overhead),prod=fabricPc+thread+print+dye+oh+trims,comm=prod*num(state.defaults.commission),profit=prod*num(state.defaults.profit),grand=prod+comm+profit;
+return {f,color,pcsKg,fx,qty,log,hilo,tejido,acabado,subtotal,waste,fabricKg,totalMxnKg,totalUsdKg,fabricPc,thread,print,dye,trims,oh,prod,comm,profit,grand,total:grand\*qty}
 }
 
 function calc(){
-  const x=getCalc();
-  document.getElementById('rUnit').textContent=money(x.grand);
-  document.getElementById('rTotal').textContent=`Total: ${money(x.total)} USD · ${x.qty.toLocaleString()} pcs`;
-  document.getElementById('calc').innerHTML=`<div>Yarn</div><div class="n">${x.hilo.toFixed(2)} MXN/kg</div><div>Knitting</div><div class="n">${x.tejido.toFixed(2)} MXN/kg</div><div>Dyeing/Finishing</div><div class="n">${x.acabado.toFixed(2)} MXN/kg</div><div>Fabric Subtotal</div><div class="n">${x.subtotal.toFixed(2)} MXN/kg</div><div>Waste ${(num(state.defaults.waste)*100).toFixed(1)}%</div><div class="n">${x.waste.toFixed(2)} MXN/kg</div><div>Fabric Cost + Waste</div><div class="n">${x.fabricKg.toFixed(2)} MXN/kg</div><div>Logistics</div><div class="n">${x.log.toFixed(2)} MXN/kg</div><div>Total</div><div class="n">${x.totalMxnKg.toFixed(2)} MXN/kg</div><div>Total USD/kg</div><div class="n">${x.totalUsdKg.toFixed(4)}</div><div>Fabric Unit Cost</div><div class="n">${money(x.fabricPc)}</div><div>Thread</div><div class="n">${money(x.thread)}</div><div>Print</div><div class="n">${money(x.print)}</div><div>Dye</div><div class="n">${money(x.dye)}</div><div>Overhead / C&amp;S</div><div class="n">${money(x.oh)}</div><div>Trims</div><div class="n">${money(x.trims)}</div><div>Production Subtotal</div><div class="n">${money(x.prod)}</div><div>Commission</div><div class="n">${money(x.comm)}</div><div>Profit</div><div class="n">${money(x.profit)}</div><div class="grand">FINAL PRICE / PIECE</div><div class="n grand">${money(x.grand)}</div>`;
-  return x;
+const x=getCalc();
+document.getElementById('rUnit').textContent=money(x.grand);
+document.getElementById('rTotal').textContent=`Total: ${money(x.total)} USD · ${x.qty.toLocaleString()} pcs`;
+document.getElementById('calc').innerHTML=`<div>Yarn</div><div class="n">${x.hilo.toFixed(2)} MXN/kg</div><div>Knitting</div><div class="n">${x.tejido.toFixed(2)} MXN/kg</div><div>Dyeing/Finishing</div><div class="n">${x.acabado.toFixed(2)} MXN/kg</div><div>Fabric Subtotal</div><div class="n">${x.subtotal.toFixed(2)} MXN/kg</div><div>Waste ${(num(state.defaults.waste)*100).toFixed(1)}%</div><div class="n">${x.waste.toFixed(2)} MXN/kg</div><div>Fabric Cost + Waste</div><div class="n">${x.fabricKg.toFixed(2)} MXN/kg</div><div>Logistics</div><div class="n">${x.log.toFixed(2)} MXN/kg</div><div>Total</div><div class="n">${x.totalMxnKg.toFixed(2)} MXN/kg</div><div>Total USD/kg</div><div class="n">${x.totalUsdKg.toFixed(4)}</div><div>Fabric Unit Cost</div><div class="n">${money(x.fabricPc)}</div><div>Thread</div><div class="n">${money(x.thread)}</div><div>Print</div><div class="n">${money(x.print)}</div><div>Dye</div><div class="n">${money(x.dye)}</div><div>Overhead / C&amp;S</div><div class="n">${money(x.oh)}</div><div>Trims</div><div class="n">${money(x.trims)}</div><div>Production Subtotal</div><div class="n">${money(x.prod)}</div><div>Commission</div><div class="n">${money(x.comm)}</div><div>Profit</div><div class="n">${money(x.profit)}</div><div class="grand">FINAL PRICE / PIECE</div><div class="n grand">${money(x.grand)}</div>`;
+return x;
 }
 
 function nextFolio(){
-  const year=new Date().getFullYear(), prefix='COT-'+year+'-';
-  const nums=state.quotes.map(q=>String(q.folio||'')).filter(f=>f.startsWith(prefix))
-    .map(f=>Number(f.slice(prefix.length))).filter(n=>Number.isFinite(n)&&n>0);
-  return prefix+String(nums.length?Math.max(...nums)+1:1).padStart(4,'0');
+const year=new Date().getFullYear(), prefix='COT-'+year+'-';
+const nums=state.quotes.map(q=>String(q.folio||'')).filter(f=>f.startsWith(prefix))
+.map(f=>Number(f.slice(prefix.length))).filter(n=>Number.isFinite(n)&&n>0);
+return prefix+String(nums.length?Math.max(...nums)+1:1).padStart(4,'0');
 }
 
 function saveQuote(){
-  const x=calc();
-  if (editingQuoteId) {
-    const index = state.quotes.findIndex(q => q.id === editingQuoteId);
-    if (index !== -1) {
-      const existing = state.quotes[index];
-      state.quotes[index] = {
-        ...existing,
-        date: document.getElementById('qDate').value,
-        client: document.getElementById('qClient').value.trim() || 'General Public',
-        style: document.getElementById('qStyle').value.trim(),
-        fabric: x.f.name,
-        color: x.color,
-        qty: x.qty,
-        pcsKg: x.pcsKg,
-        log: x.log,
-        fx: x.fx,
-        thread: x.thread,
-        print: x.print,
-        dye: x.dye,
-        trims: x.trims,
-        notes: document.getElementById('qNotes').value,
-        photos: quotePhotos,
-        unit: x.grand,
-        total: x.total
-      };
-      toast('Quote updated successfully: ' + existing.folio);
-    }
-  } else {
-    const q = {
-      id: crypto.randomUUID(),
-      folio: nextFolio(),
-      date: document.getElementById('qDate').value,
-      client: document.getElementById('qClient').value.trim() || 'General Public',
-      style: document.getElementById('qStyle').value.trim(),
-      fabric: x.f.name,
-      color: x.color,
-      qty: x.qty,
-      pcsKg: x.pcsKg,
-      log: x.log,
-      fx: x.fx,
-      thread: x.thread,
-      print: x.print,
-      dye: x.dye,
-      trims: x.trims,
-      notes: document.getElementById('qNotes').value,
-      photos: quotePhotos,
-      unit: x.grand,
-      total: x.total,
-      createdAt: new Date().toISOString()
-    };
-    state.quotes.unshift(q);
-    document.getElementById('resultRef').textContent = q.folio + ' · ' + q.date;
-    toast('Quote saved and synced: ' + q.folio);
-  }
+const x=calc();
+if (editingQuoteId) {
+const index = state.quotes.findIndex(q => q.id === editingQuoteId);
+if (index !== -1) {
+const existing = state.quotes\[index\];
+state.quotes\[index\] = {
+...existing,
+date: document.getElementById('qDate').value,
+client: document.getElementById('qClient').value.trim() || 'General Public',
+style: document.getElementById('qStyle').value.trim(),
+fabric: x.f.name,
+color: x.color,
+qty: x.qty,
+pcsKg: x.pcsKg,
+log: x.log,
+fx: x.fx,
+thread: x.thread,
+print: x.print,
+dye: x.dye,
+trims: x.trims,
+notes: document.getElementById('qNotes').value,
+photos: quotePhotos,
+unit: x.grand,
+total: x.total
+};
+toast('Quote updated successfully: ' + existing.folio);
+}
+} else {
+const q = {
+id: crypto.randomUUID(),
+folio: nextFolio(),
+date: document.getElementById('qDate').value,
+client: document.getElementById('qClient').value.trim() || 'General Public',
+style: document.getElementById('qStyle').value.trim(),
+fabric: x.f.name,
+color: x.color,
+qty: x.qty,
+pcsKg: x.pcsKg,
+log: x.log,
+fx: x.fx,
+thread: x.thread,
+print: x.print,
+dye: x.dye,
+trims: x.trims,
+notes: document.getElementById('qNotes').value,
+photos: quotePhotos,
+unit: x.grand,
+total: x.total,
+createdAt: new Date().toISOString()
+};
+state.quotes.unshift(q);
+document.getElementById('resultRef').textContent = q.folio + ' · ' + q.date;
+toast('Quote saved and synced: ' + q.folio);
+}
 
-  if(!state.clients.some(c=>c.name.toLowerCase() === document.getElementById('qClient').value.trim().toLowerCase()) && document.getElementById('qClient').value.trim() && document.getElementById('qClient').value.trim() !== 'General Public') {
-    state.clients.push({id:crypto.randomUUID(),name:document.getElementById('qClient').value.trim(),contact:'',phone:'',notes:''});
-  }
-  
-  persist();
-  updateClientList();
-  renderDashboard();
-  
-  resetQuote(true);
-  editingQuoteId = null;
-  document.getElementById('formTitleText').textContent = 'Quote Information';
-  document.getElementById('saveBtnText').textContent = 'Save Quote';
+if(!state.clients.some(c=>c.name.toLowerCase() === document.getElementById('qClient').value.trim().toLowerCase()) && document.getElementById('qClient').value.trim() && document.getElementById('qClient').value.trim() !== 'General Public') {
+state.clients.push({id:crypto.randomUUID(),name:document.getElementById('qClient').value.trim(),contact:'',phone:'',notes:''});
+}
+
+persist();
+updateClientList();
+renderDashboard();
+
+resetQuote(true);
+editingQuoteId = null;
+document.getElementById('formTitleText').textContent = 'Quote Information';
+document.getElementById('saveBtnText').textContent = 'Save Quote';
 }
 
 function resetQuote(clearAllFields = true){
-  if (clearAllFields) {
-    document.getElementById('qClient').value='';
-    document.getElementById('qStyle').value='';
-    document.getElementById('qFabric').selectedIndex = 0;
-    fillColors();
-    document.getElementById('qQty').value='';
-    document.getElementById('qPcsKg').value='';
-    document.getElementById('qLogistics').value='';
-    document.getElementById('qFx').value='';
-    document.getElementById('qThread').value='';
-    document.getElementById('qPrint').value='';
-    document.getElementById('qDye').value='';
-    document.getElementById('qTrims').value='';
-  }
-  document.getElementById('qNotes').value='';
-  quotePhotos=[];
-  const ph=document.getElementById('qPhotos');
-  if(ph)ph.value='';
-  renderPhotoPreview();
-  if (clearAllFields) {
-    document.getElementById('resultRef').textContent='Unsaved';
-    editingQuoteId = null;
-    document.getElementById('formTitleText').textContent = 'Quote Information';
-    document.getElementById('saveBtnText').textContent = 'Save Quote';
-  }
-  calc();
+if (clearAllFields) {
+document.getElementById('qClient').value='';
+document.getElementById('qStyle').value='';
+document.getElementById('qFabric').selectedIndex = 0;
+fillColors();
+document.getElementById('qQty').value='';
+document.getElementById('qPcsKg').value='';
+document.getElementById('qLogistics').value='';
+document.getElementById('qFx').value='';
+document.getElementById('qThread').value='';
+document.getElementById('qPrint').value='';
+document.getElementById('qDye').value='';
+document.getElementById('qTrims').value='';
+}
+document.getElementById('qNotes').value='';
+quotePhotos=\[\];
+const ph=document.getElementById('qPhotos');
+if(ph)ph.value='';
+renderPhotoPreview();
+if (clearAllFields) {
+document.getElementById('resultRef').textContent='Unsaved';
+editingQuoteId = null;
+document.getElementById('formTitleText').textContent = 'Quote Information';
+document.getElementById('saveBtnText').textContent = 'Save Quote';
+}
+calc();
 }
 
 function printQuote(){
-  const x=calc(), client=document.getElementById('qClient').value||'General Public', style=document.getElementById('qStyle').value,
-  folio=editingQuoteId ? (state.quotes.find(q => q.id === editingQuoteId)?.folio || nextFolio()) : (document.getElementById('resultRef').textContent.split('·')[0].trim() !== 'Unsaved' ? document.getElementById('resultRef').textContent.split('·')[0].trim() : nextFolio());
-  
-  const originalTitle = document.title;
-  document.title = folio;
+const x=calc(), client=document.getElementById('qClient').value||'General Public', style=document.getElementById('qStyle').value,
+folio=editingQuoteId ? (state.quotes.find(q => q.id === editingQuoteId)?.folio || nextFolio()) : (document.getElementById('resultRef').textContent.split('·')\[0\].trim() !== 'Unsaved' ? document.getElementById('resultRef').textContent.split('·')\[0\].trim() : nextFolio());
 
-  document.getElementById('printArea').innerHTML=`<div class="pdf-container">
-    <div class="pdf-header">
-      <div>
-        <div class="pdf-logo">
-          <span style="font-weight:900;font-size:11px;letter-spacing:1px;line-height:1">JV</span>
-          <span style="font-weight:700;font-size:5px;letter-spacing:1px;margin-top:1px;text-transform:uppercase">International</span>
-        </div>
-        <div style="font-weight:800;font-size:13px;margin-top:3px">Garment Costing Summary</div>
-      </div>
-      <div class="pdf-meta-box">
-        <div style="font-weight:900;font-size:13px;color:#0b5d94">${folio}</div>
-        <div style="color:#666;font-size:9px">${document.getElementById('qDate').value}</div>
-      </div>
-    </div>
-    
-    <div class="pdf-grid">
-      <div><b>Client:</b> ${esc(client)}</div>
-      <div><b>Style / Body:</b> ${esc(style||'N/A')}</div>
-      <div><b>Fabric:</b> ${esc(x.f.name)}</div>
-      <div><b>Color:</b> ${esc(x.color)}</div>
-      <div><b>Quantity:</b> ${x.qty.toLocaleString()} pcs</div>
-    </div>
+const originalTitle = document.title;
+document.title = folio;
 
-    <table class="pdf-table">
-      <thead>
-        <tr>
-          <th>Summary of Charges</th>
-          <th style="text-align:right">Amount per Piece (USD)</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${[
-          ['Fabric Cost', x.fabricPc],
-          ['Thread', x.thread],
-          ['Print', x.print],
-          ['Dye', x.dye],
-          ['Overhead / C&S', x.oh],
-          ['Trims', x.trims],
-          ['Commission', x.comm],
-          ['Profit', x.profit]
-        ].map(r=>`<tr><td>${r[0]}</td><td style="text-align:right">${money(r[1])}</td></tr>`).join('')}
-      </tbody>
-    </table>
+document.getElementById('printArea').innerHTML=\`
 
-    <div class="pdf-totals">
-      <div style="font-size:10px;color:#4b5563;font-weight:700;text-transform:uppercase">Unit Price</div>
-      <div style="font-size:15px;font-weight:900;color:#0f6fb2">${money(x.grand)}</div>
-      <div style="font-size:10px;color:#4b5563;font-weight:700;text-transform:uppercase;margin-top:3px">Total Quote Amount</div>
-      <div style="font-size:13px;font-weight:800;color:#17212b">${money(x.total)} USD</div>
-    </div>
-  </div>`;
 
-  window.print();
-  setTimeout(() => { document.title = originalTitle; }, 1000);
+JVInternational
+Garment Costing Summary
+
+
+${folio}</div>
+<div style="color:#666;font-size:9px">${document.getElementById('qDate').value}
+
+
+```
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;background:#f8fafc;padding:6px;border-radius:4px;margin-bottom:8px;font-size:10px">
+  <div><b>Client:</b> ${esc(client)}</div>
+  <div><b>Style / Body:</b> ${esc(style||'N/A')}</div>
+  <div><b>Fabric:</b> ${esc(x.f.name)}</div>
+  <div><b>Color:</b> ${esc(x.color)}</div>
+  <div><b>Quantity:</b> ${x.qty.toLocaleString()} pcs</div>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:10px;margin-bottom:8px">
+  <thead>
+    <tr style="background:#f1f5f9">
+      <th style="padding:4px 6px;border-bottom:1px solid #e5e7eb;text-align:left;font-weight:700">Summary of Charges</th>
+      <th style="padding:4px 6px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:700">Amount per Piece (USD)</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${[
+      ['Fabric Cost', x.fabricPc],
+      ['Thread', x.thread],
+      ['Print', x.print],
+      ['Dye', x.dye],
+      ['Overhead / C&S', x.oh],
+      ['Trims', x.trims],
+      ['Commission', x.comm],
+      ['Profit', x.profit]
+    ].map(r=>`<tr><td style="padding:3px 6px;border-bottom:1px solid #e5e7eb">${r[0]}</td><td style="padding:3px 6px;border-bottom:1px solid #e5e7eb;text-align:right">${money(r[1])}</td></tr>`).join('')}
+  </tbody>
+</table>
+
+<div style="background:#f0f9ff;border-radius:4px;padding:6px 10px;text-align:right">
+  <div style="font-size:9px;color:#4b5563;font-weight:700;text-transform:uppercase">Unit Price</div>
+  <div style="font-size:13px;font-weight:900;color:#0f6fb2">${money(x.grand)}</div>
+  <div style="font-size:9px;color:#4b5563;font-weight:700;text-transform:uppercase;margin-top:2px">Total Quote Amount</div>
+  <div style="font-size:11px;font-weight:800;color:#17212b">${money(x.total)} USD</div>
+</div>
+
+```
+
+window.print();
+setTimeout(() => { document.title = originalTitle; }, 1000);
 }
 
 function exportHistoryCSV(){
-  if(!state.quotes.length) return toast('No quotes to export');
-  const cols = ['Folio','Date','Client','Style/Body','Fabric','Color','Quantity','USD/pc','Total USD'];
-  const rows = state.quotes.map(q => [q.folio, q.date, q.client, q.style||'', q.fabric, q.color, q.qty, q.unit, q.total]);
-  const csvContent = [cols.join(',')].concat(rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','))).join('\n');
-  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'Quotes_Database.csv';
-  a.click(); URL.revokeObjectURL(url);
+if(!state.quotes.length) return toast('No quotes to export');
+const cols = \['Folio','Date','Client','Style/Body','Fabric','Color','Quantity','USD/pc','Total USD'\];
+const rows = state.quotes.map(q => \[q.folio, q.date, q.client, q.style||'', q.fabric, q.color, q.qty, q.unit, q.total\]);
+const csvContent = \[cols.join(',')\].concat(rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','))).join('\\n');
+const blob = new Blob(\['\\uFEFF' + csvContent\], { type: 'text/csv;charset=utf-8;' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url; a.download = 'Quotes_Database.csv';
+a.click(); URL.revokeObjectURL(url);
 }
 
 function renderDashboard(){
-  document.getElementById('kQuotes').textContent=state.quotes.length;
-  document.getElementById('kClients').textContent=state.clients.length;
-  document.getElementById('kLast').textContent=state.quotes[0]?.folio||'—';
-  document.getElementById('kAvg').textContent=state.quotes.length?money(state.quotes.reduce((a,q)=>a+q.unit,0)/state.quotes.length):'$0.00';
-  const qs=state.quotes.slice(0,8);
-  document.getElementById('dashQuotes').innerHTML=qs.length?`<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Client</th><th>Fabric</th><th>Qty.</th><th>USD/pc</th></tr>${qs.map(q=>`<tr><td><b>${q.folio}</b></td><td>${esc(q.client)}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.unit)}</td></tr>`).join('')}</table></div>`:'<div class="empty">No saved quotes yet.</div>';
+document.getElementById('kQuotes').textContent=state.quotes.length;
+document.getElementById('kClients').textContent=state.clients.length;
+document.getElementById('kLast').textContent=state.quotes\[0\]?.folio||'—';
+document.getElementById('kAvg').textContent=state.quotes.length?money(state.quotes.reduce((a,q)=>a+q.unit,0)/state.quotes.length):'$0.00';
+const qs=state.quotes.slice(0,8);
+document.getElementById('dashQuotes').innerHTML=qs.length?`<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Client</th><th>Fabric</th><th>Qty.</th><th>USD/pc</th></tr>${qs.map(q=>`<tr><td><b>${q.folio}${esc(q.client)}</td><td>${esc(q.fabric)}${q.qty.toLocaleString()}</td><td>${money(q.unit)}`).join('')}</table></div>`:'No saved quotes yet.';
 }
 
 function renderHistory(){
-  const term=(document.getElementById('historySearch')?.value||'').toLowerCase();
-  const qs=state.quotes.filter(q=>(q.folio+' '+q.client).toLowerCase().includes(term));
-  document.getElementById('historyTable').innerHTML=qs.length?`<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q=>`<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style||'—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn secondary" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>`:'<div class="empty">No results found.</div>';
+const term=(document.getElementById('historySearch')?.value||'').toLowerCase();
+const qs=state.quotes.filter(q=>(q.folio+' '+q.client).toLowerCase().includes(term));
+document.getElementById('historyTable').innerHTML=qs.length?`<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q=>`${q.folio}</b></td><td>${q.date}${esc(q.client)}</td><td>${esc(q.style||'—')}${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}\${money(q.total)}Edit / Open`).join('')}</table></div>`:'No results found.';
 }
 
 function loadQuote(id){
-  const q=state.quotes.find(x=>x.id===id);
-  if(!q)return;
-  editingQuoteId = q.id;
-  document.getElementById('formTitleText').textContent = `Editing Quote: ${q.folio}`;
-  document.getElementById('saveBtnText').textContent = 'Update Quote';
-  showView('new');
-  document.getElementById('qClient').value=q.client;
-  document.getElementById('qStyle').value=q.style||'';
-  document.getElementById('qDate').value=q.date;
-  const fi=state.base.findIndex(x=>x.name===q.fabric);
-  document.getElementById('qFabric').value=Math.max(0,fi);
-  fillColors();
-  document.getElementById('qColor').value=q.color;
-  document.getElementById('qPcsKg').value=q.pcsKg;
-  document.getElementById('qLogistics').value=q.log;
-  document.getElementById('qFx').value=q.fx;
-  document.getElementById('qThread').value=q.thread;
-  document.getElementById('qPrint').value=q.print;
-  document.getElementById('qDye').value=q.dye;
-  document.getElementById('qTrims').value=q.trims;
-  document.getElementById('qQty').value=q.qty;
-  document.getElementById('qNotes').value=q.notes||'';
-  quotePhotos=q.photos||[];
-  renderPhotoPreview();
-  document.getElementById('resultRef').textContent=q.folio+' · '+q.date;
-  calc();
+const q=state.quotes.find(x=>x.id=id);
+if(!q)return;
+editingQuoteId = q.id;
+document.getElementById('formTitleText').textContent = `Editing Quote: ${q.folio}`;
+document.getElementById('saveBtnText').textContent = 'Update Quote';
+showView('new');
+document.getElementById('qClient').value=q.client;
+document.getElementById('qStyle').value=q.style||'';
+document.getElementById('qDate').value=q.date;
+const fi=state.base.findIndex(x=>x.name=q.fabric);
+document.getElementById('qFabric').value=Math.max(0,fi);
+fillColors();
+document.getElementById('qColor').value=q.color;
+document.getElementById('qPcsKg').value=q.pcsKg;
+document.getElementById('qLogistics').value=q.log;
+document.getElementById('qFx').value=q.fx;
+document.getElementById('qThread').value=q.thread;
+document.getElementById('qPrint').value=q.print;
+document.getElementById('qDye').value=q.dye;
+document.getElementById('qTrims').value=q.trims;
+document.getElementById('qQty').value=q.qty;
+document.getElementById('qNotes').value=q.notes||'';
+quotePhotos=q.photos||\[\];
+renderPhotoPreview();
+document.getElementById('resultRef').textContent=q.folio+' · '+q.date;
+calc();
 }
 
 function addClient(){
-  const name=document.getElementById('cName').value.trim();
-  if(!name)return toast('Enter client name');
-  state.clients.push({id:crypto.randomUUID(),name,contact:document.getElementById('cContact').value,phone:document.getElementById('cPhone').value,notes:document.getElementById('cNotes').value});
-  persist();
-  document.getElementById('cName').value='';document.getElementById('cContact').value='';document.getElementById('cPhone').value='';document.getElementById('cNotes').value='';
-  renderClients();
-  updateClientList();
-  toast('Client added');
+const name=document.getElementById('cName').value.trim();
+if(!name)return toast('Enter client name');
+state.clients.push({id:crypto.randomUUID(),name,contact:document.getElementById('cContact').value,phone:document.getElementById('cPhone').value,notes:document.getElementById('cNotes').value});
+persist();
+document.getElementById('cName').value='';document.getElementById('cContact').value='';document.getElementById('cPhone').value='';document.getElementById('cNotes').value='';
+renderClients();
+updateClientList();
+toast('Client added');
 }
 
 function updateClientList(){
-  const d=document.getElementById('clientList');
-  if(d)d.innerHTML=state.clients.map(c=>`<option value="${esc(c.name)}">`).join('');
+const d=document.getElementById('clientList');
+if(d)d.innerHTML=state.clients.map(c=>`<option value="${esc(c.name)}">`).join('');
 }
 
 function renderClients(){
-  document.getElementById('clientsTable').innerHTML=state.clients.length?`<div class="table-wrap"><table class="table"><tr><th>Client</th><th>Contact</th><th>Phone</th><th>Notes</th></tr>${state.clients.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.contact)}</td><td>${esc(c.phone)}</td><td>${esc(c.notes)}</td></tr>`).join('')}</table></div>`:'<div class="empty">No registered clients.</div>';
+document.getElementById('clientsTable').innerHTML=state.clients.length?`<div class="table-wrap"><table class="table"><tr><th>Client</th><th>Contact</th><th>Phone</th><th>Notes</th></tr>${state.clients.map(c=>`${esc(c.name)}</b></td><td>${esc(c.contact)}${esc(c.phone)}</td><td>${esc(c.notes)}`).join('')}</table></div>`:'No registered clients.';
 }
 
 function renderBase(){
-  document.getElementById('baseTable').innerHTML=`<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f,fi)=>Object.entries(f.colors).map(([c,d])=>`<tr><td>${esc(f.name)}</td><td><span class="badge">${c}</span></td><td><input type="number" step="0.01" value="${d.hilo}" onchange="editBase(${fi},'${c}','hilo',this.value)"></td><td><input type="number" step="0.01" value="${d.tejido}" onchange="editBase(${fi},'${c}','tejido',this.value)"></td><td><input type="number" step="0.01" value="${d.acabado}" onchange="editBase(${fi},'${c}','acabado',this.value)"></td><td><button class="btn secondary" onclick="removeColor(${fi},'${c}')">Delete</button></td></tr>`)).join('')}</table></div>`;
+document.getElementById('baseTable').innerHTML=`<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f,fi)=>Object.entries(f.colors).map(([c,d])=>`${esc(f.name)}</td><td><span class="badge">${c}Delete`)).join('')}</table></div>`;
 }
 
 function editBase(fi,c,k,v){
-  state.base[fi].colors[c][k]=num(v);
-  persist();
-  toast('Cost updated');
+state.base\[fi\].colors\[c\]\[k\]=num(v);
+persist();
+toast('Cost updated');
 }
 
 function addFabric(){
-  const name=prompt('New fabric name:');
-  if(!name)return;
-  state.base.push({name,colors:{PFD:{hilo:0,tejido:0,acabado:0},BLANCO:{hilo:0,tejido:0,acabado:0},CLARO:{hilo:0,tejido:0,acabado:0},MEDIO:{hilo:0,tejido:0,acabado:0},OSCURO:{hilo:0,tejido:0,acabado:0}}});
-  persist();
-  renderBase();
-  fillFabric();
+const name=prompt('New fabric name:');
+if(!name)return;
+state.base.push({name,colors:{PFD:{hilo:0,tejido:0,acabado:0},BLANCO:{hilo:0,tejido:0,acabado:0},CLARO:{hilo:0,tejido:0,acabado:0},MEDIO:{hilo:0,tejido:0,acabado:0},OSCURO:{hilo:0,tejido:0,acabado:0}}});
+persist();
+renderBase();
+fillFabric();
 }
 
 function removeColor(fi,c){
-  if(!confirm('Delete color '+c+' from '+state.base[fi].name+'?'))return;
-  delete state.base[fi].colors[c];
-  persist();
-  renderBase();
-  fillFabric();
+if(!confirm('Delete color '+c+' from '+state.base\[fi\].name+'?'))return;
+delete state.base\[fi\].colors\[c\];
+persist();
+renderBase();
+fillFabric();
 }
 
 function loadSettings(){
-  document.getElementById('sWaste').value=state.defaults.waste*100;
-  document.getElementById('sOverhead').value=state.defaults.overhead*100;
-  document.getElementById('sCommission').value=state.defaults.commission*100;
-  document.getElementById('sProfit').value=state.defaults.profit*100;
+document.getElementById('sWaste').value=state.defaults.waste*100;
+document.getElementById('sOverhead').value=state.defaults.overhead*100;
+document.getElementById('sCommission').value=state.defaults.commission*100;
+document.getElementById('sProfit').value=state.defaults.profit*100;
 }
 
 function saveSettings(){
-  state.defaults.waste=num(document.getElementById('sWaste').value)/100;
-  state.defaults.overhead=num(document.getElementById('sOverhead').value)/100;
-  state.defaults.commission=num(document.getElementById('sCommission').value)/100;
-  state.defaults.profit=num(document.getElementById('sProfit').value)/100;
-  persist();
-  toast('Settings saved');
-  calc();
+state.defaults.waste=num(document.getElementById('sWaste').value)/100;
+state.defaults.overhead=num(document.getElementById('sOverhead').value)/100;
+state.defaults.commission=num(document.getElementById('sCommission').value)/100;
+state.defaults.profit=num(document.getElementById('sProfit').value)/100;
+persist();
+toast('Settings saved');
+calc();
 }
 
 function exportData(){
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='quoter_backup.json';a.click();URL.revokeObjectURL(a.href);
+const blob=new Blob(\[JSON.stringify(state,null,2)\],{type:'application/json'}),a=document.createElement('a');
+a.href=URL.createObjectURL(blob);a.download='quoter_backup.json';a.click();URL.revokeObjectURL(a.href);
 }
 
 function importData(e){
-  const f=e.target.files[0];
-  if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{
-    try{
-      const x=JSON.parse(r.result);
-      if(!x.base||!x.defaults)throw Error();
-      state=x;
-      persist();
-      toast('Data imported and synced');
-    }catch{toast('Invalid backup file')}
-  };
-  r.readAsText(f);
+const f=e.target.files\[0\];
+if(!f)return;
+const r=new FileReader();
+r.onload=()=>{
+try{
+const x=JSON.parse(r.result);
+if(!x.base||!x.defaults)throw Error();
+state=x;
+persist();
+toast('Data imported and synced');
+}catch{toast('Invalid backup file')}
+};
+r.readAsText(f);
 }
 
 function clearAll(){
-  if(!confirm('This will delete all quotes and clients from the cloud database. Continue?'))return;
-  dbRef.remove().then(()=>{
-    state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
-    try{localStorage.removeItem(LOCAL_KEY)}catch(e){}
-    persist();
-    toast('Database cleared');
-  });
+if(!confirm('This will delete all quotes and clients from the cloud database. Continue?'))return;
+dbRef.remove().then(()=>{
+state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:\[\],clients:\[\]};
+try{localStorage.removeItem(LOCAL_KEY)}catch(e){}
+persist();
+toast('Database cleared');
+});
 }
 
-function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function esc(s){return String(s??'').replace(/\[&<>'"\]/g,c=>({'&':'&','<':'<','>':'>',"'":''','"':'"'}\[c\]))}
 
 init();
-</script></body></html>
