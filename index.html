@@ -26,48 +26,55 @@
     body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
     
     /* Sidebar Navigation */
-    aside { width: 260px; background: var(--accent); color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; border-right: 1px solid rgba(255,255,255,0.1); }
-    .brand { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 32px; display: flex; align-items: center; gap: 10px; color: #fff; }
+    aside { width: 260px; background: var(--accent); color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; border-right: 1px solid rgba(255,255,255,0.1); transition: transform 0.3s ease; z-index: 100; }
+    .brand { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; color: #fff; }
+    .brand-content { display: flex; align-items: center; gap: 10px; }
     .brand span { color: var(--primary); background: rgba(15, 111, 178, 0.2); padding: 4px 8px; border-radius: 6px; font-size: 12px; }
     .nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .nav button { background: transparent; border: none; color: #9ca3af; text-align: left; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; }
+    .nav button { background: transparent; border: none; color: #9ca3af; text-align: left; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; min-height: 44px; }
     .nav button:hover { background: rgba(255,255,255,0.05); color: #fff; }
     .nav button.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(15,111,178,0.3); }
     .sidebar-footer { font-size: 11px; color: #6b7280; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; }
 
     /* Main Container */
-    main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    header { background: var(--surface); padding: 16px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; min-height: 73px; }
+    main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; width: 100%; }
+    header { background: var(--surface); padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; min-height: 73px; }
+    .header-left { display: flex; align-items: center; gap: 16px; }
     header h1 { font-size: 20px; font-weight: 700; color: var(--accent); }
     header p { font-size: 12px; color: var(--text-light); }
     .header-actions { display: flex; gap: 12px; align-items: center; }
 
-    .content { flex: 1; overflow-y: auto; padding: 24px 32px; position: relative; }
+    /* Mobile Menu Toggle */
+    .menu-toggle { display: none; background: transparent; border: none; font-size: 22px; cursor: pointer; color: var(--accent); padding: 4px; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; }
+
+    .content { flex: 1; overflow-y: auto; padding: 24px; position: relative; }
     .view { display: none; }
     .view:not(.hidden) { display: block; animation: fadeIn 0.25s ease-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
     /* Utility UI Elements */
-    .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(15,111,178,0.2); }
+    .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 4px rgba(15,111,178,0.2); min-height: 44px; }
     .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .btn-secondary { background: #e5e7eb; color: var(--text); box-shadow: none; }
     .btn-secondary:hover { background: #d1d5db; color: #000; }
     .btn-danger { background: #ef4444; color: white; box-shadow: none; }
     .btn-danger:hover { background: #dc2626; }
     
-    .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-control { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: #fff; transition: border-color 0.2s; }
+    .form-control { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: #fff; transition: border-color 0.2s; min-height: 44px; }
     .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,111,178,0.15); }
+    textarea.form-control { min-height: 80px; }
 
     /* Tables */
-    .table-wrap { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; background: #fff; }
+    .table-wrap { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; background: #fff; min-width: 500px; }
     th { background: #f8fafc; font-weight: 700; color: var(--text-light); padding: 12px 16px; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
     td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
     tr:last-child td { border-bottom: none; }
@@ -98,6 +105,25 @@
     .hidden { display: none !important; }
     .badge { background: #e0f2fe; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; }
 
+    /* Responsive Media Queries */
+    @media (max-width: 1024px) {
+      .calc-layout { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 768px) {
+      aside { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
+      aside.open { transform: translateX(0); }
+      .sidebar-overlay.show { display: block; }
+      .menu-toggle { display: block; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      header { padding: 12px 16px; }
+      .content { padding: 16px; }
+      .header-actions .btn { padding: 8px 12px; font-size: 12px; }
+    }
+
     /* Print styling strictly tuned for single page output */
     #printArea { display: none; }
     @media print {
@@ -123,9 +149,13 @@
 </head>
 <body>
 
-  <aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside id="sidebar">
     <div>
-      <div class="brand">JV INTERNATIONAL <span>QUOTER</span></div>
+      <div class="brand">
+        <div class="brand-content">JV INTERNATIONAL <span>QUOTER</span></div>
+        <button class="menu-toggle" style="color: #fff;" onclick="toggleSidebar()">✕</button>
+      </div>
       <div class="nav">
         <button data-view="dashboard" class="active">📊 Dashboard</button>
         <button data-view="new">⚡ New Quote</button>
@@ -135,14 +165,17 @@
         <button data-view="settings">🔧 Settings & Cloud</button>
       </div>
     </div>
-    <div class="sidebar-footer">Garment Costing v2.5<br>Cloud Synced</div>
+    <div class="sidebar-footer">Garment Costing v2.6<br>Cloud Synced</div>
   </aside>
 
   <main>
     <header>
-      <div>
-        <h1 id="title">Dashboard</h1>
-        <p id="subtitle">Overview of quotes and pricing.</p>
+      <div class="header-left">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div>
+          <h1 id="title">Dashboard</h1>
+          <p id="subtitle">Overview of quotes and pricing.</p>
+        </div>
       </div>
       <div class="header-actions">
         <button class="btn" onclick="showNewQuote()">+ New Quotation</button>
@@ -272,7 +305,7 @@
               <div class="calc-box" id="calc"></div>
             </div>
 
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button class="btn" style="flex: 1; justify-content: center;" onclick="saveQuote()"><span id="saveBtnText">Save Quote</span></button>
               <button class="btn btn-secondary" onclick="printQuote()">🖨️ PDF / Print</button>
               <button class="btn btn-secondary" onclick="resetQuote(true)">🔄 Reset</button>
@@ -285,7 +318,7 @@
       <!-- HISTORY VIEW -->
       <div id="history" class="view hidden">
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <input type="text" id="historySearch" class="form-control" placeholder="Search by folio or client name..." style="max-width: 300px;" oninput="renderHistory()">
             <button class="btn btn-secondary" onclick="exportHistoryCSV()">📥 Export CSV Database</button>
           </div>
@@ -314,7 +347,7 @@
       <!-- COST BASE VIEW -->
       <div id="base" class="view hidden">
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <h3 style="font-size: 16px; font-weight: 700;">Editable Fabric & Cost Matrix (MXN / kg)</h3>
             <button class="btn" onclick="addFabric()">+ Add New Fabric Type</button>
           </div>
@@ -336,9 +369,9 @@
           <div class="card">
             <h3 style="margin-bottom: 16px; font-size: 16px; font-weight: 700;">Cloud & Local Backup</h3>
             <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">Export your complete application data including all saved quotations, clients, and custom cost bases to a local JSON file or import a backup.</p>
-            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
               <button class="btn btn-secondary" onclick="exportData()">Backup JSON</button>
-              <label class="btn btn-secondary" style="cursor: pointer; margin: 0;">Import Backup <input type="file" accept=".json" onchange="importData(event)" style="display: none;"></label>
+              <label class="btn btn-secondary" style="cursor: pointer; margin: 0; display: inline-flex; align-items: center;">Import Backup <input type="file" accept=".json" onchange="importData(event)" style="display: none;"></label>
             </div>
             <button class="btn btn-danger" onclick="clearAll()">Clear Cloud Database</button>
           </div>
@@ -450,6 +483,11 @@
     function num(n) { return Number(n) || 0; }
     function toast(t) { const e = document.getElementById('toast'); e.textContent = t; e.classList.add('show'); setTimeout(() => e.classList.remove('show'), 2200); }
 
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+
     function showView(v) {
       document.querySelectorAll('.view').forEach(x => x.classList.add('hidden'));
       document.getElementById(v).classList.remove('hidden');
@@ -458,6 +496,11 @@
       document.getElementById('subtitle').textContent = titles[v][1];
       refreshCurrentView();
       if(v === 'new' && !editingQuoteId) initQuote();
+      // Auto close sidebar on mobile after selecting a view
+      if(window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      }
     }
 
     function showNewQuote() {
@@ -513,7 +556,6 @@
       document.getElementById('qDate').value = new Date().toISOString().slice(0, 10);
       const ph = document.getElementById('qPhotos');
       if(ph) ph.onchange = handlePhotos;
-      document.getElementById('qClient').focus();
       updateClientList();
       calc();
       renderPhotoPreview();
@@ -681,7 +723,6 @@
       const style = document.getElementById('qStyle').value;
       const folio = editingQuoteId ? (state.quotes.find(q => q.id === editingQuoteId)?.folio || nextFolio()) : (document.getElementById('resultRef').textContent.split('·')[0].trim() !== 'Unsaved' ? document.getElementById('resultRef').textContent.split('·')[0].trim() : nextFolio());
 
-      // Dynamically set document.title so when printing / saving as PDF, the filename matches the folio
       document.title = folio;
 
       document.getElementById('printArea').innerHTML = `
@@ -768,7 +809,7 @@
     function renderHistory() {
       const term = (document.getElementById('historySearch')?.value || '').toLowerCase();
       const qs = state.quotes.filter(q => (q.folio + ' ' + q.client).toLowerCase().includes(term));
-      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>` : 'No results found.';
+      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>` : 'No results found.';
     }
 
     function loadQuote(id) {
@@ -821,7 +862,7 @@
     }
 
     function renderBase() {
-      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f, fi) => Object.entries(f.colors).map(([c, d]) => `<tr><td>${esc(f.name)}</td><td><span class="badge">${c}</span></td><td><input type="number" step="0.1" value="${d.hilo}" class="form-control" style="width: 90px; padding: 4px 8px;" onchange="editBase(${fi},'${c}','hilo',this.value)"></td><td><input type="number" step="0.1" value="${d.tejido}" class="form-control" style="width: 90px; padding: 4px 8px;" onchange="editBase(${fi},'${c}','tejido',this.value)"></td><td><input type="number" step="0.1" value="${d.acabado}" class="form-control" style="width: 90px; padding: 4px 8px;" onchange="editBase(${fi},'${c}','acabado',this.value)"></td><td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="removeColor(${fi},'${c}')">Delete</button></td></tr>`)).join('')}</table></div>`;
+      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f, fi) => Object.entries(f.colors).map(([c, d]) => `<tr><td>${esc(f.name)}</td><td><span class="badge">${c}</span></td><td><input type="number" step="0.1" value="${d.hilo}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','hilo',this.value)"></td><td><input type="number" step="0.1" value="${d.tejido}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','tejido',this.value)"></td><td><input type="number" step="0.1" value="${d.acabado}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','acabado',this.value)"></td><td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="removeColor(${fi},'${c}')">Delete</button></td></tr>`)).join('')}</table></div>`;
     }
 
     function editBase(fi, c, k, v) {
