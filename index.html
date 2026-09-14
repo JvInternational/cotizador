@@ -56,17 +56,49 @@ const titles={
   settings:['Settings','Margins, backup, and cloud data.']
 };
 
-function persist(){ dbRef.set(state); }
+const LOCAL_KEY = 'jv_international_quoter_state_v1';
 
-dbRef.on('value', (snapshot) => {
-  const data = snapshot.val();
-  if (data) {
-    state = data;
-    if(!state.base) state.base = INITIAL.base;
-    if(!state.defaults) state.defaults = INITIAL.defaults;
-    if(!state.quotes) state.quotes = [];
-    if(!state.clients) state.clients = [];
-  } else {
+function saveLocal(){
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }
+  catch(e){ console.warn('Local backup could not be saved:', e); }
+}
+
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem(LOCAL_KEY);
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    if(!data)return false;
+    state={
+      base:data.base||INITIAL.base,
+      defaults:data.defaults||INITIAL.defaults,
+      quotes:Array.isArray(data.quotes)?data.quotes:[],
+      clients:Array.isArray(data.clients)?data.clients:[]
+    };
+    return true;
+  }catch(e){ return false; }
+}
+
+function persist(){
+  saveLocal();
+  try{ dbRef.set(state).catch(e=>console.warn('Firebase sync failed:',e)); }
+  catch(e){ console.warn('Firebase sync failed:',e); }
+}
+
+const hadLocalData=loadLocal();
+
+dbRef.on('value',(snapshot)=>{
+  const data=snapshot.val();
+  if(data){
+    state={
+      base:data.base||INITIAL.base,
+      defaults:data.defaults||INITIAL.defaults,
+      quotes:Array.isArray(data.quotes)?data.quotes:[],
+      clients:Array.isArray(data.clients)?data.clients:[]
+    };
+    saveLocal();
+  }else if(!hadLocalData){
+    state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
     persist();
   }
   refreshCurrentView();
@@ -186,7 +218,12 @@ function calc(){
   return x;
 }
 
-function nextFolio(){const n=state.quotes.length+1;return 'COT-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0')}
+function nextFolio(){
+  const year=new Date().getFullYear(), prefix='COT-'+year+'-';
+  const nums=state.quotes.map(q=>String(q.folio||'')).filter(f=>f.startsWith(prefix))
+    .map(f=>Number(f.slice(prefix.length))).filter(n=>Number.isFinite(n)&&n>0);
+  return prefix+String(nums.length?Math.max(...nums)+1:1).padStart(4,'0');
+}
 
 function saveQuote(){
   const x=calc();
@@ -295,7 +332,7 @@ function printQuote(){
     <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #ccc;padding-bottom:6px;margin-bottom:8px">
       <div>
         <div style="background:#0b5d94;padding:4px 8px;border-radius:4px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:4px;color:#fff"><span style="font-weight:900;font-size:11px;letter-spacing:1px;line-height:1">JV</span><span style="font-weight:700;font-size:5px;letter-spacing:1px;margin-top:1px;text-transform:uppercase">International</span></div>
-        <h1 style="margin:0;font-size:16px">JV International</h1>
+        <h1 style="margin:0;font-size:16px">JV International - ${folio}</h1>
       </div>
       <div style="text-align:right">
         <div style="font-weight:900;font-size:13px;color:#0b5d94">${folio}</div>
@@ -460,6 +497,7 @@ function clearAll(){
   if(!confirm('This will delete all quotes and clients from the cloud database. Continue?'))return;
   dbRef.remove().then(()=>{
     state={base:INITIAL.base,defaults:INITIAL.defaults,quotes:[],clients:[]};
+    try{localStorage.removeItem(LOCAL_KEY)}catch(e){}
     persist();
     toast('Database cleared');
   });
