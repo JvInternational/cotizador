@@ -201,7 +201,7 @@
           </div>
           <div class="stat-card">
             <div class="label">Avg. Unit Price</div>
-            <div class="value" id="$kAvg">$0.00</div>
+            <div class="value" id="kAvg">$0.00</div>
           </div>
         </div>
         <div class="card">
@@ -409,6 +409,12 @@
       defaults: {fabric:"24/1 OE 100%", color:"MEDIO", pcsKg:4, logistics:17, fx:16.7, thread:0.1, print:0.5, dye:0.55, trims:0.18, waste:0.03, overhead:0.35, commission:0.05, profit:0.1}
     };
 
+    function cleanBase(base) {
+      if(!base) return INITIAL.base;
+      const list = Array.isArray(base) ? base : Object.values(base);
+      return list.filter(f => f && f.colors && Object.keys(f.colors).length);
+    }
+
     let state = { base: INITIAL.base, defaults: INITIAL.defaults, quotes: [], clients: [] };
     let editingQuoteId = null;
 
@@ -435,7 +441,7 @@
         const data = JSON.parse(raw);
         if(!data) return false;
         state = {
-          base: data.base || INITIAL.base,
+          base: cleanBase(data.base),
           defaults: data.defaults || INITIAL.defaults,
           quotes: Array.isArray(data.quotes) ? data.quotes : [],
           clients: Array.isArray(data.clients) ? data.clients : []
@@ -456,7 +462,7 @@
       const data = snapshot.val();
       if(data) {
         state = {
-          base: data.base || INITIAL.base,
+          base: cleanBase(data.base),
           defaults: data.defaults || INITIAL.defaults,
           quotes: Array.isArray(data.quotes) ? data.quotes : [],
           clients: Array.isArray(data.clients) ? data.clients : []
@@ -846,13 +852,18 @@
       document.getElementById('kLast').textContent = state.quotes[0]?.folio || '—';
       document.getElementById('kAvg').textContent = state.quotes.length ? money(state.quotes.reduce((a, q) => a + q.unit, 0) / state.quotes.length) : '$0.00';
       const qs = state.quotes.slice(0, 8);
-      document.getElementById('dashQuotes').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Client</th><th>Fabric</th><th>Qty.</th><th>USD/pc</th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b></td><td>${esc(q.client)}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.unit)}</td></tr>`).join('')}</table></div>` : 'No saved quotes yet.';
+      document.getElementById('dashQuotes').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Client</th><th>Fabric</th><th>Qty.</th><th>USD/pc</th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b>${attachIcon(q)}</td><td>${esc(q.client)}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.unit)}</td></tr>`).join('')}</table></div>` : 'No saved quotes yet.';
+    }
+
+    function attachIcon(q) {
+      const n = Array.isArray(q.photos) ? q.photos.length : 0;
+      return n ? ` <span title="${n} attached image${n > 1 ? 's' : ''}" style="font-size: 13px; cursor: default;">📎</span>` : '';
     }
 
     function renderHistory() {
       const term = (document.getElementById('historySearch')?.value || '').toLowerCase();
       const qs = state.quotes.filter(q => (q.folio + ' ' + q.client).toLowerCase().includes(term));
-      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>` : 'No results found.';
+      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b>${attachIcon(q)}</td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>` : 'No results found.';
     }
 
     function loadQuote(id) {
@@ -915,54 +926,103 @@
     }
 
     function addFabric() {
-      const enteredName = prompt('New fabric type name:');
-      const name = enteredName ? enteredName.trim() : '';
-      if(!name) return;
-
-      if(state.base.some(fabric => String(fabric.name).trim().toLowerCase() === name.toLowerCase())) {
-        toast('Fabric type already exists');
-        return;
-      }
-
       const availableColors = ['PFD', 'BLANCO', 'CLARO', 'MEDIO', 'OSCURO'];
-      const colorSelection = prompt(
-        'Select the color for this new fabric type:\n\n' +
-        availableColors.map((color, index) => `${index + 1}. ${color}`).join('\n') +
-        '\n\nEnter a number from 1 to 5, or type a custom color name:'
-      );
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 16px;';
+      overlay.innerHTML = `
+        <div class="card" style="width: 100%; max-width: 380px; margin: 0;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; font-weight: 700;">Add New Fabric Type</h3>
+          <div class="form-group">
+            <label>Fabric Type Name</label>
+            <input type="text" id="newFabricName" class="form-control" placeholder="e.g. 30/1 PDO 100%">
+          </div>
+          <div class="form-group">
+            <label>Color Tone</label>
+            <select id="newFabricColor" class="form-control">
+              ${availableColors.map(c => `<option value="${c}">${c}</option>`).join('')}
+              <option value="__custom__">Other (custom name)...</option>
+            </select>
+          </div>
+          <div class="form-group hidden" id="newFabricCustomWrap">
+            <label>Custom Color Name</label>
+            <input type="text" id="newFabricCustom" class="form-control" placeholder="e.g. NEGRO">
+          </div>
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary" id="newFabricCancel">Cancel</button>
+            <button type="button" class="btn" id="newFabricSave">Add</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
 
-      if(colorSelection === null) return;
+      const nameInput = overlay.querySelector('#newFabricName');
+      const colorSelect = overlay.querySelector('#newFabricColor');
+      const customWrap = overlay.querySelector('#newFabricCustomWrap');
+      const customInput = overlay.querySelector('#newFabricCustom');
 
-      const selectedValue = colorSelection.trim();
-      if(!selectedValue) {
-        toast('Select or enter a color');
-        return;
-      }
+      function close() { document.removeEventListener('keydown', onKey); overlay.remove(); }
+      function onKey(e) { if(e.key === 'Escape') close(); }
+      document.addEventListener('keydown', onKey);
 
-      const selectedNumber = Number(selectedValue);
-      const color = Number.isInteger(selectedNumber) && selectedNumber >= 1 && selectedNumber <= availableColors.length
-        ? availableColors[selectedNumber - 1]
-        : selectedValue.toUpperCase();
-
-      state.base.push({
-        name,
-        colors: {
-          [color]: { hilo: 0, tejido: 0, acabado: 0 }
-        }
+      colorSelect.addEventListener('change', () => {
+        const isCustom = colorSelect.value === '__custom__';
+        customWrap.classList.toggle('hidden', !isCustom);
+        if(isCustom) customInput.focus();
       });
 
-      persist();
-      renderBase();
-      fillFabric();
-      toast('Fabric type and color added successfully');
+      function save() {
+        const name = nameInput.value.trim();
+        if(!name) { toast('Enter a fabric type name'); nameInput.focus(); return; }
+
+        if(state.base.some(fabric => String(fabric.name).trim().toLowerCase() === name.toLowerCase())) {
+          toast('Fabric type already exists');
+          return;
+        }
+
+        let color = colorSelect.value;
+        if(color === '__custom__') {
+          color = customInput.value.replace(/['"\\<>]/g, '').trim().toUpperCase();
+          if(!color) { toast('Select or enter a color'); customInput.focus(); return; }
+        }
+
+        state.base.push({
+          name,
+          colors: {
+            [color]: { hilo: 0, tejido: 0, acabado: 0 }
+          }
+        });
+
+        close();
+        persist();
+        renderBase();
+        fillFabric();
+        toast('Fabric type and color added successfully');
+      }
+
+      overlay.querySelector('#newFabricSave').addEventListener('click', save);
+      overlay.querySelector('#newFabricCancel').addEventListener('click', close);
+      overlay.addEventListener('mousedown', e => { if(e.target === overlay) close(); });
+      overlay.addEventListener('keydown', e => { if(e.key === 'Enter') { e.preventDefault(); save(); } });
+      nameInput.focus();
     }
 
     function removeColor(fi, c) {
-      if(!confirm('Delete color ' + c + ' from ' + state.base[fi].name + '?')) return;
-      delete state.base[fi].colors[c];
+      const fabric = state.base[fi];
+      if(!fabric) return;
+      const isLastRow = Object.keys(fabric.colors || {}).length <= 1;
+      if(isLastRow && state.base.length <= 1) {
+        toast('At least one fabric type must remain');
+        return;
+      }
+      const msg = isLastRow
+        ? 'Delete row ' + fabric.name + ' / ' + c + '?\n\nThis is the last row of this fabric type, so the fabric type will be removed too.'
+        : 'Delete row ' + fabric.name + ' / ' + c + '?';
+      if(!confirm(msg)) return;
+      delete fabric.colors[c];
+      if(!Object.keys(fabric.colors).length) state.base.splice(fi, 1);
       persist();
       renderBase();
       fillFabric();
+      toast('Row deleted');
     }
 
     function loadSettings() {
