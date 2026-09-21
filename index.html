@@ -286,7 +286,6 @@
                 </div>
               </div>
               <div id="photoPreview" style="font-size: 12px; color: var(--text-light); margin-top: 4px;">No photos selected.</div>
-              <div id="activeAttachmentsPreview" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
               <div class="form-group" style="margin-top: 16px;">
                 <label>Internal Notes / Specs</label>
                 <textarea id="qNotes" class="form-control" rows="2" placeholder="Fabric specs, special instructions..."></textarea>
@@ -350,7 +349,10 @@
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <h3 style="font-size: 16px; font-weight: 700;">Editable Fabric & Cost Matrix (MXN / kg)</h3>
-            <button class="btn" onclick="addFabric()">+ Add New Fabric Type</button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-secondary" onclick="addColorToFabric()">+ Add Color To Existing Fabric</button>
+              <button class="btn" onclick="addFabric()">+ Add New Fabric Type</button>
+            </div>
           </div>
           <div id="baseTable">Loading matrix...</div>
         </div>
@@ -497,6 +499,7 @@
       document.getElementById('subtitle').textContent = titles[v][1];
       refreshCurrentView();
       if(v === 'new' && !editingQuoteId) initQuote();
+      // Auto close sidebar on mobile after selecting a view
       if(window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('open');
         document.getElementById('sidebarOverlay').classList.remove('show');
@@ -564,43 +567,13 @@
     let quotePhotos = [];
     function handlePhotos(e) {
       const files = Array.from(e.target.files || []);
-      if (!files.length) return;
-      
       Promise.all(files.map(f => new Promise((resolve, reject) => {
-        const r = new FileReader(); 
-        r.onload = () => resolve(r.result); 
-        r.onerror = reject; 
-        r.readAsDataURL(f);
-      }))).then(imgs => {
-        // Evitar duplicados exactos en base64 al adjuntar
-        imgs.forEach(img => {
-          if (!quotePhotos.includes(img)) {
-            quotePhotos.push(img);
-          }
-        });
-        renderPhotoPreview();
-        // Limpiar el valor del input para permitir volver a cargar la misma imagen de ser necesario sin problemas
-        e.target.value = '';
-      }).catch(err => console.warn('Error reading files:', err));
+        const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(f);
+      }))).then(imgs => { quotePhotos = imgs; renderPhotoPreview(); });
     }
-
     function renderPhotoPreview() {
       const p = document.getElementById('photoPreview');
-      const ap = document.getElementById('activeAttachmentsPreview');
       if(p) p.textContent = quotePhotos.length ? `${quotePhotos.length} photo(s) selected.` : 'No photos selected.';
-      if(ap) {
-        ap.innerHTML = quotePhotos.map((img, idx) => `
-          <div style="position: relative; width: 60px; height: 60px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #f8fafc;">
-            <img src="${img}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${img}')" title="Click to view full size">
-            <button type="button" onclick="removePhoto(${idx})" style="position: absolute; top: 2px; right: 2px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
-          </div>
-        `).join('');
-      }
-    }
-
-    function removePhoto(idx) {
-      quotePhotos.splice(idx, 1);
-      renderPhotoPreview();
     }
 
     function getCalc() {
@@ -796,15 +769,6 @@
           </tbody>
         </table>
 
-        ${quotePhotos.length ? `
-          <div style="margin-bottom: 14px;">
-            <div style="font-size: 11px; font-weight: 700; color: #4b5563; text-transform: uppercase; margin-bottom: 6px;">Reference Attachments Preview:</div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              ${quotePhotos.map(img => `<img src="${img}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc;">`).join('')}
-            </div>
-          </div>
-        ` : ''}
-
         <div style="background: #f0f9ff; border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bae6fd;">
           <div>
             <div style="font-size: 10px; color: #0369a1; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Unit Price</div>
@@ -826,8 +790,8 @@
 
     function exportHistoryCSV() {
       if(!state.quotes.length) return toast('No quotes to export');
-      const cols = ['Folio', 'Date', 'Client', 'Style/Body', 'Fabric', 'Color', 'Quantity', 'USD/pc', 'Total USD', 'Attachments Count'];
-      const rows = state.quotes.map(q => [q.folio, q.date, q.client, q.style || '', q.fabric, q.color, q.qty, q.unit, q.total, (q.photos || []).length]);
+      const cols = ['Folio', 'Date', 'Client', 'Style/Body', 'Fabric', 'Color', 'Quantity', 'USD/pc', 'Total USD'];
+      const rows = state.quotes.map(q => [q.folio, q.date, q.client, q.style || '', q.fabric, q.color, q.qty, q.unit, q.total]);
       const csvContent = [cols.join(',')].concat(rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','))).join('\n');
       const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -848,44 +812,7 @@
     function renderHistory() {
       const term = (document.getElementById('historySearch')?.value || '').toLowerCase();
       const qs = state.quotes.filter(q => (q.folio + ' ' + q.client).toLowerCase().includes(term));
-      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th>Attachments</th><th></th></tr>${qs.map(q => {
-        const attCount = (q.photos || []).length;
-        const attBadge = attCount > 0 ? `<span class="badge" style="background: #dbeafe; color: #1e40af; cursor: pointer;" onclick="openAttachmentsModal('${q.id}')" title="Click to view attached previews">📎 ${attCount} attached</span>` : `<span style="color: #9ca3af; font-size: 11px;">None</span>`;
-        return `<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td>${attBadge}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`;
-      }).join('')}</table></div>` : 'No results found.';
-    }
-
-    function openAttachmentsModal(id) {
-      const q = state.quotes.find(x => x.id === id);
-      if(!q || !q.photos || !q.photos.length) return;
-      
-      let modalOverlay = document.getElementById('attachmentModalOverlay');
-      if(!modalOverlay) {
-        modalOverlay = document.createElement('div');
-        modalOverlay.id = 'attachmentModalOverlay';
-        modalOverlay.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px;';
-        document.body.appendChild(modalOverlay);
-      }
-      
-      modalOverlay.innerHTML = `
-        <div style="background: white; border-radius: var(--radius); padding: 24px; max-width: 600px; width: 100%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); max-height: 85vh; display: flex; flex-direction: column;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-            <h3 style="font-size: 16px; font-weight: 700;">Attachments Preview - ${q.folio}</h3>
-            <button onclick="document.getElementById('attachmentModalOverlay').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-light);">✕</button>
-          </div>
-          <div style="overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; flex: 1;">
-            ${q.photos.map(img => `
-              <div style="border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #f8fafc; height: 120px;">
-                <img src="${img}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open('${img}')" title="Click to view full image">
-              </div>
-            `).join('')}
-          </div>
-          <div style="margin-top: 16px; text-align: right;">
-            <button class="btn btn-secondary" onclick="document.getElementById('attachmentModalOverlay').remove()">Close</button>
-          </div>
-        </div>
-      `;
-      modalOverlay.style.display = 'flex';
+      document.getElementById('historyTable').innerHTML = qs.length ? `<div class="table-wrap"><table class="table"><tr><th>Folio</th><th>Date</th><th>Client</th><th>Style</th><th>Fabric</th><th>Quantity</th><th>Total USD</th><th></th></tr>${qs.map(q => `<tr><td><b>${q.folio}</b></td><td>${q.date}</td><td>${esc(q.client)}</td><td>${esc(q.style || '—')}</td><td>${esc(q.fabric)}</td><td>${q.qty.toLocaleString()}</td><td>${money(q.total)}</td><td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="loadQuote('${q.id}')">Edit / Open</button></td></tr>`).join('')}</table></div>` : 'No results found.';
     }
 
     function loadQuote(id) {
@@ -938,25 +865,96 @@
     }
 
     function renderBase() {
-      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f, fi) => Object.entries(f.colors).map(([c, d]) => `<tr><td>${esc(f.name)}</td><td><span class="badge">${c}</span></td><td><input type="number" step="0.1" value="${d.hilo}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','hilo',this.value)"></td><td><input type="number" step="0.1" value="${d.tejido}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','tejido',this.value)"></td><td><input type="number" step="0.1" value="${d.acabado}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','acabado',this.value)"></td><td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="removeColor(${fi},'${c}')">Delete</button></td></tr>`)).join('')}</table></div>`;
+      const rows = state.base.flatMap((f, fi) =>
+        Object.entries(f.colors || {}).map(([c, d]) => {
+          const safeColor = encodeURIComponent(c);
+          return `<tr>
+            <td>${esc(f.name)}</td>
+            <td><span class="badge">${esc(c)}</span></td>
+            <td><input type="number" step="0.1" value="${num(d.hilo)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'hilo',this.value)"></td>
+            <td><input type="number" step="0.1" value="${num(d.tejido)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'tejido',this.value)"></td>
+            <td><input type="number" step="0.1" value="${num(d.acabado)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'acabado',this.value)"></td>
+            <td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="removeColor(${fi},decodeURIComponent('${safeColor}'))">Delete</button></td>
+          </tr>`;
+        })
+      ).join('');
+
+      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${rows}</table></div>`;
     }
 
     function editBase(fi, c, k, v) {
+      if(!state.base[fi] || !state.base[fi].colors || !state.base[fi].colors[c]) return;
       state.base[fi].colors[c][k] = num(v);
       persist();
       toast('Cost updated');
     }
 
     function addFabric() {
-      const name = prompt('New fabric name:');
+      const enteredName = prompt('New fabric name:');
+      const name = enteredName ? enteredName.trim() : '';
       if(!name) return;
-      state.base.push({ name, colors: { PFD: {hilo:0, tejido:0, acabado:0}, BLANCO: {hilo:0, tejido:0, acabado:0}, CLARO: {hilo:0, tejido:0, acabado:0}, MEDIO: {hilo:0, tejido:0, acabado:0}, OSCURO: {hilo:0, tejido:0, acabado:0} } });
+
+      if(state.base.some(f => String(f.name).trim().toLowerCase() === name.toLowerCase())) {
+        toast('Fabric already exists');
+        return;
+      }
+
+      state.base.push({
+        name,
+        colors: {
+          PFD: {hilo:0, tejido:0, acabado:0},
+          BLANCO: {hilo:0, tejido:0, acabado:0},
+          CLARO: {hilo:0, tejido:0, acabado:0},
+          MEDIO: {hilo:0, tejido:0, acabado:0},
+          OSCURO: {hilo:0, tejido:0, acabado:0}
+        }
+      });
       persist();
       renderBase();
       fillFabric();
+      toast('Fabric added successfully');
+    }
+
+    function addColorToFabric() {
+      if(!state.base.length) {
+        toast('No fabrics available');
+        return;
+      }
+
+      const fabricList = state.base.map((f, i) => `${i + 1}. ${f.name}`).join('\n');
+      const selected = prompt('Select the fabric number:\n\n' + fabricList);
+      if(selected === null) return;
+
+      const fabricNumber = Number(String(selected).trim());
+      const fabricIndex = fabricNumber - 1;
+
+      if(!Number.isInteger(fabricNumber) || fabricIndex < 0 || fabricIndex >= state.base.length) {
+        toast('Invalid fabric selection');
+        return;
+      }
+
+      const enteredColor = prompt('New color name:');
+      const colorKey = enteredColor ? enteredColor.trim().toUpperCase() : '';
+      if(!colorKey) return;
+
+      const fabric = state.base[fabricIndex];
+      fabric.colors = fabric.colors || {};
+
+      const duplicate = Object.keys(fabric.colors).some(c => c.toUpperCase() === colorKey);
+      if(duplicate) {
+        toast('Color already exists');
+        return;
+      }
+
+      fabric.colors[colorKey] = { hilo: 0, tejido: 0, acabado: 0 };
+      persist();
+      renderBase();
+      fillFabric();
+      toast('Color added successfully');
     }
 
     function removeColor(fi, c) {
+      if(!state.base[fi] || !state.base[fi].colors || !state.base[fi].colors[c]) return;
       if(!confirm('Delete color ' + c + ' from ' + state.base[fi].name + '?')) return;
       delete state.base[fi].colors[c];
       persist();
