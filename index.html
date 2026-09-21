@@ -286,6 +286,7 @@
                 </div>
               </div>
               <div id="photoPreview" style="font-size: 12px; color: var(--text-light); margin-top: 4px;">No photos selected.</div>
+              <div id="activeAttachmentsPreview" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
               <div class="form-group" style="margin-top: 16px;">
                 <label>Internal Notes / Specs</label>
                 <textarea id="qNotes" class="form-control" rows="2" placeholder="Fabric specs, special instructions..."></textarea>
@@ -349,10 +350,7 @@
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <h3 style="font-size: 16px; font-weight: 700;">Editable Fabric & Cost Matrix (MXN / kg)</h3>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn btn-secondary" onclick="addColorToFabric()">+ Add Color To Existing Fabric</button>
-              <button class="btn" onclick="addFabric()">+ Add New Fabric Type</button>
-            </div>
+            <button class="btn" onclick="addFabric()">+ Add New Fabric Type</button>
           </div>
           <div id="baseTable">Loading matrix...</div>
         </div>
@@ -565,15 +563,48 @@
     }
 
     let quotePhotos = [];
+
     function handlePhotos(e) {
       const files = Array.from(e.target.files || []);
-      Promise.all(files.map(f => new Promise((resolve, reject) => {
-        const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(f);
-      }))).then(imgs => { quotePhotos = imgs; renderPhotoPreview(); });
+      if(!files.length) return;
+
+      Promise.all(files.map(file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      }))).then(images => {
+        images.forEach(image => {
+          if(!quotePhotos.includes(image)) quotePhotos.push(image);
+        });
+        renderPhotoPreview();
+        e.target.value = '';
+      }).catch(error => console.warn('Error reading files:', error));
     }
+
     function renderPhotoPreview() {
-      const p = document.getElementById('photoPreview');
-      if(p) p.textContent = quotePhotos.length ? `${quotePhotos.length} photo(s) selected.` : 'No photos selected.';
+      const status = document.getElementById('photoPreview');
+      const preview = document.getElementById('activeAttachmentsPreview');
+
+      if(status) {
+        status.textContent = quotePhotos.length
+          ? `${quotePhotos.length} photo(s) selected.`
+          : 'No photos selected.';
+      }
+
+      if(preview) {
+        preview.innerHTML = quotePhotos.map((image, index) => `
+          <div style="position: relative; width: 60px; height: 60px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #f8fafc;">
+            <img src="${image}" alt="Reference photo ${index + 1}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src, '_blank')" title="Click to view full size">
+            <button type="button" onclick="removePhoto(${index})" style="position: absolute; top: 2px; right: 2px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function removePhoto(index) {
+      quotePhotos.splice(index, 1);
+      renderPhotoPreview();
     }
 
     function getCalc() {
@@ -769,6 +800,15 @@
           </tbody>
         </table>
 
+        ${quotePhotos.length ? `
+          <div style="margin-bottom: 14px; page-break-inside: avoid;">
+            <div style="font-size: 11px; font-weight: 700; color: #4b5563; text-transform: uppercase; margin-bottom: 6px;">Reference Attachments Preview:</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              ${quotePhotos.map((image, index) => `<img src="${image}" alt="Reference photo ${index + 1}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc;">`).join('')}
+            </div>
+          </div>
+        ` : ''}
+
         <div style="background: #f0f9ff; border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bae6fd;">
           <div>
             <div style="font-size: 10px; color: #0369a1; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Unit Price</div>
@@ -865,96 +905,59 @@
     }
 
     function renderBase() {
-      const rows = state.base.flatMap((f, fi) =>
-        Object.entries(f.colors || {}).map(([c, d]) => {
-          const safeColor = encodeURIComponent(c);
-          return `<tr>
-            <td>${esc(f.name)}</td>
-            <td><span class="badge">${esc(c)}</span></td>
-            <td><input type="number" step="0.1" value="${num(d.hilo)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'hilo',this.value)"></td>
-            <td><input type="number" step="0.1" value="${num(d.tejido)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'tejido',this.value)"></td>
-            <td><input type="number" step="0.1" value="${num(d.acabado)}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},decodeURIComponent('${safeColor}'),'acabado',this.value)"></td>
-            <td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="removeColor(${fi},decodeURIComponent('${safeColor}'))">Delete</button></td>
-          </tr>`;
-        })
-      ).join('');
-
-      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${rows}</table></div>`;
+      document.getElementById('baseTable').innerHTML = `<div class="table-wrap"><table class="table"><tr><th>Fabric</th><th>Color</th><th>Yarn</th><th>Knitting</th><th>Finishing</th><th></th></tr>${state.base.flatMap((f, fi) => Object.entries(f.colors).map(([c, d]) => `<tr><td>${esc(f.name)}</td><td><span class="badge">${c}</span></td><td><input type="number" step="0.1" value="${d.hilo}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','hilo',this.value)"></td><td><input type="number" step="0.1" value="${d.tejido}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','tejido',this.value)"></td><td><input type="number" step="0.1" value="${d.acabado}" class="form-control" style="width: 90px; padding: 4px 8px; min-height: 36px;" onchange="editBase(${fi},'${c}','acabado',this.value)"></td><td><button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; min-height: 32px;" onclick="removeColor(${fi},'${c}')">Delete</button></td></tr>`)).join('')}</table></div>`;
     }
 
     function editBase(fi, c, k, v) {
-      if(!state.base[fi] || !state.base[fi].colors || !state.base[fi].colors[c]) return;
       state.base[fi].colors[c][k] = num(v);
       persist();
       toast('Cost updated');
     }
 
     function addFabric() {
-      const enteredName = prompt('New fabric name:');
+      const enteredName = prompt('New fabric type name:');
       const name = enteredName ? enteredName.trim() : '';
       if(!name) return;
 
-      if(state.base.some(f => String(f.name).trim().toLowerCase() === name.toLowerCase())) {
-        toast('Fabric already exists');
+      if(state.base.some(fabric => String(fabric.name).trim().toLowerCase() === name.toLowerCase())) {
+        toast('Fabric type already exists');
         return;
       }
+
+      const availableColors = ['PFD', 'BLANCO', 'CLARO', 'MEDIO', 'OSCURO'];
+      const colorSelection = prompt(
+        'Select the color for this new fabric type:\n\n' +
+        availableColors.map((color, index) => `${index + 1}. ${color}`).join('\n') +
+        '\n\nEnter a number from 1 to 5, or type a custom color name:'
+      );
+
+      if(colorSelection === null) return;
+
+      const selectedValue = colorSelection.trim();
+      if(!selectedValue) {
+        toast('Select or enter a color');
+        return;
+      }
+
+      const selectedNumber = Number(selectedValue);
+      const color = Number.isInteger(selectedNumber) && selectedNumber >= 1 && selectedNumber <= availableColors.length
+        ? availableColors[selectedNumber - 1]
+        : selectedValue.toUpperCase();
 
       state.base.push({
         name,
         colors: {
-          PFD: {hilo:0, tejido:0, acabado:0},
-          BLANCO: {hilo:0, tejido:0, acabado:0},
-          CLARO: {hilo:0, tejido:0, acabado:0},
-          MEDIO: {hilo:0, tejido:0, acabado:0},
-          OSCURO: {hilo:0, tejido:0, acabado:0}
+          [color]: { hilo: 0, tejido: 0, acabado: 0 }
         }
       });
+
       persist();
       renderBase();
       fillFabric();
-      toast('Fabric added successfully');
-    }
-
-    function addColorToFabric() {
-      if(!state.base.length) {
-        toast('No fabrics available');
-        return;
-      }
-
-      const fabricList = state.base.map((f, i) => `${i + 1}. ${f.name}`).join('\n');
-      const selected = prompt('Select the fabric number:\n\n' + fabricList);
-      if(selected === null) return;
-
-      const fabricNumber = Number(String(selected).trim());
-      const fabricIndex = fabricNumber - 1;
-
-      if(!Number.isInteger(fabricNumber) || fabricIndex < 0 || fabricIndex >= state.base.length) {
-        toast('Invalid fabric selection');
-        return;
-      }
-
-      const enteredColor = prompt('New color name:');
-      const colorKey = enteredColor ? enteredColor.trim().toUpperCase() : '';
-      if(!colorKey) return;
-
-      const fabric = state.base[fabricIndex];
-      fabric.colors = fabric.colors || {};
-
-      const duplicate = Object.keys(fabric.colors).some(c => c.toUpperCase() === colorKey);
-      if(duplicate) {
-        toast('Color already exists');
-        return;
-      }
-
-      fabric.colors[colorKey] = { hilo: 0, tejido: 0, acabado: 0 };
-      persist();
-      renderBase();
-      fillFabric();
-      toast('Color added successfully');
+      toast('Fabric type and color added successfully');
     }
 
     function removeColor(fi, c) {
-      if(!state.base[fi] || !state.base[fi].colors || !state.base[fi].colors[c]) return;
       if(!confirm('Delete color ' + c + ' from ' + state.base[fi].name + '?')) return;
       delete state.base[fi].colors[c];
       persist();
